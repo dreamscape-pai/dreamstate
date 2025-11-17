@@ -1,0 +1,74 @@
+import { pgTable, serial, varchar, text, integer, boolean, bigint, timestamp, pgEnum, uniqueIndex } from 'drizzle-orm/pg-core';
+
+// Faction enum
+export const factionEnum = pgEnum('faction', ['DEJA_VU', 'LUCID', 'HYPNOTIC', 'DRIFT']);
+
+// Order status enum
+export const orderStatusEnum = pgEnum('order_status', ['PENDING', 'PAID', 'CANCELED', 'REFUNDED']);
+
+// Faction table
+export const factions = pgTable('factions', {
+  id: serial('id').primaryKey(),
+  name: factionEnum('name').notNull().unique(),
+  displayName: varchar('display_name', { length: 100 }).notNull(),
+  description: text('description').notNull(),
+  colorToken: varchar('color_token', { length: 50 }).notNull(),
+  iconUrl: varchar('icon_url', { length: 255 }),
+});
+
+// TicketType table
+export const ticketTypes = pgTable('ticket_types', {
+  id: serial('id').primaryKey(),
+  stripePriceId: varchar('stripe_price_id', { length: 255 }).notNull().unique(),
+  name: varchar('name', { length: 100 }).notNull(),
+  description: text('description').notNull(),
+  currency: varchar('currency', { length: 3 }).notNull().default('thb'),
+  basePriceMinor: integer('base_price_minor').notNull(), // Price in satang (smallest currency unit)
+  totalInventory: integer('total_inventory'), // null means unlimited
+  isActive: boolean('is_active').notNull().default(true),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
+
+// TicketOrder table
+export const ticketOrders = pgTable('ticket_orders', {
+  id: serial('id').primaryKey(),
+  stripeCheckoutSessionId: varchar('stripe_checkout_session_id', { length: 255 }).notNull().unique(),
+  stripePaymentIntentId: varchar('stripe_payment_intent_id', { length: 255 }).unique(),
+  customerEmail: varchar('customer_email', { length: 255 }).notNull(),
+  ticketTypeId: integer('ticket_type_id')
+    .notNull()
+    .references(() => ticketTypes.id),
+  quantity: integer('quantity').notNull(),
+  orderSequenceNumber: bigint('order_sequence_number', { mode: 'number' }).notNull().unique(),
+  assignedFactionId: integer('assigned_faction_id')
+    .notNull()
+    .references(() => factions.id),
+  status: orderStatusEnum('status').notNull().default('PENDING'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+}, (table) => {
+  return {
+    sessionIdx: uniqueIndex('session_idx').on(table.stripeCheckoutSessionId),
+    sequenceIdx: uniqueIndex('sequence_idx').on(table.orderSequenceNumber),
+  };
+});
+
+// TicketCounter table (for sequential order numbers)
+export const ticketCounter = pgTable('ticket_counter', {
+  id: integer('id').primaryKey().default(1),
+  currentValue: bigint('current_value', { mode: 'number' }).notNull().default(0),
+});
+
+// Type exports for TypeScript
+export type Faction = typeof factions.$inferSelect;
+export type NewFaction = typeof factions.$inferInsert;
+
+export type TicketType = typeof ticketTypes.$inferSelect;
+export type NewTicketType = typeof ticketTypes.$inferInsert;
+
+export type TicketOrder = typeof ticketOrders.$inferSelect;
+export type NewTicketOrder = typeof ticketOrders.$inferInsert;
+
+export type TicketCounter = typeof ticketCounter.$inferSelect;
+export type NewTicketCounter = typeof ticketCounter.$inferInsert;
