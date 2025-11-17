@@ -92,7 +92,7 @@ function ThankYouContent() {
           <div className="text-center mb-12">
             <div className="text-6xl mb-6">✨</div>
             <h1 className="text-4xl md:text-5xl font-title font-bold mb-4 text-dreamstate-ice">
-              Welcome to Dreamstate!
+              Welcome
             </h1>
             <p className="text-xl text-dreamstate-periwinkle">
               Your journey begins here
