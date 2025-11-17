@@ -8,11 +8,11 @@ import type { TicketAvailability } from '@/lib/types';
 // Map ticket names to chess piece images
 const getTicketImage = (ticketName: string): string => {
   const name = ticketName.toLowerCase();
-  if (name.includes('first mover')) return '/images/pieces/pawn.png';
-  if (name.includes('early bird')) return '/images/pieces/knight.png';
-  if (name.includes('general admission')) return '/images/pieces/rook.png';
-  if (name.includes('donor')) return '/images/pieces/queen.png';
-  return '/images/pieces/pawn.png'; // default
+  if (name.includes('first mover') || name.includes('tier 1')) return '/images/pieces/knight.png';
+  if (name.includes('pathmaker') || name.includes('tier 2')) return '/images/pieces/bishop.png';
+  if (name.includes('castle') || name.includes('tier 3')) return '/images/pieces/rook.png';
+  if (name.includes('dreamweaver') || name.includes('donor')) return '/images/pieces/queen.png';
+  return '/images/pieces/knight.png'; // default
 };
 
 export default function TicketPurchase() {
@@ -105,23 +105,6 @@ export default function TicketPurchase() {
         )}
 
         <div className="bg-dreamstate-slate/20 p-8 rounded-lg border border-dreamstate-purple/30 space-y-6 font-body">
-          {/* Purchase Button */}
-          <button
-            onClick={handlePurchase}
-            disabled={
-              loading ||
-              !selectedTicket ||
-              (selectedTicket && selectedTicket.remaining !== null && selectedTicket.remaining < quantity)
-            }
-            className="w-full px-6 py-4 bg-dreamstate-purple hover:bg-dreamstate-slate disabled:bg-gray-600 text-dreamstate-ice text-lg font-semibold rounded-lg shadow-lg"
-          >
-            {loading ? 'Processing...' : 'Proceed to Payment'}
-          </button>
-
-          <p className="text-xs text-center text-gray-500">
-            Secure payment powered by Stripe. You will be redirected to complete your purchase.
-          </p>
-
           {/* Total Price */}
           {selectedTicket && (
             <div className="pt-4 border-t border-dreamstate-slate/50">
@@ -154,6 +137,23 @@ export default function TicketPurchase() {
               </select>
             </div>
           )}
+
+          {/* Purchase Button */}
+          <button
+            onClick={handlePurchase}
+            disabled={
+              loading ||
+              !selectedTicket ||
+              (selectedTicket && selectedTicket.remaining !== null && selectedTicket.remaining < quantity)
+            }
+            className="w-full px-6 py-4 bg-dreamstate-purple hover:bg-dreamstate-slate disabled:bg-gray-600 text-dreamstate-ice text-lg font-semibold rounded-lg shadow-lg"
+          >
+            {loading ? 'Processing...' : 'Proceed to Payment'}
+          </button>
+
+          <p className="text-xs text-center text-gray-500">
+            Secure payment powered by Stripe. You will be redirected to complete your purchase.
+          </p>
 
           {/* Ticket Type Selection */}
           <div>

@@ -6,28 +6,28 @@ const factions = [
     colorClass: 'faction-bg-deja-vu',
     borderColor: 'border-faction-deja-vu',
     description: 'Experience the familiar strangeness of moments already lived.',
-    icon: '🔮',
+    image: '/images/factions/deja vu.png',
   },
   {
     name: 'Lucid',
     colorClass: 'faction-bg-lucid',
     borderColor: 'border-faction-lucid',
     description: 'Masters of conscious dreaming, walking between sleep and wakefulness.',
-    icon: '✨',
+    image: '/images/factions/lucid.png',
   },
   {
     name: 'Hypnotic',
     colorClass: 'faction-bg-hypnotic',
     borderColor: 'border-faction-hypnotic',
     description: 'Surrender to the trance and flow with the rhythm of the unconscious.',
-    icon: '🌀',
+    image: '/images/factions/hypnotic.png',
   },
   {
     name: 'Drift',
     colorClass: 'faction-bg-drift',
     borderColor: 'border-faction-drift',
     description: 'Float between worlds in the liminal spaces of existence.',
-    icon: '🌊',
+    image: '/images/factions/drift.png',
   },
 ];
 
@@ -48,7 +48,7 @@ export default function FactionGrid() {
 
       <div className="relative z-10 max-w-6xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
-          Choose Your Faction
+          Discover Your Faction
         </h2>
         <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
           Every ticket holder is assigned to one of four factions. Each faction represents
@@ -64,7 +64,14 @@ export default function FactionGrid() {
               <div className={`absolute inset-0 ${faction.colorClass} opacity-10`} />
 
               <div className="relative z-10">
-                <div className="text-5xl mb-4">{faction.icon}</div>
+                <div className="w-24 h-24 mb-4 relative rounded-2xl overflow-hidden border-2 border-dreamstate-purple/30">
+                  <Image
+                    src={faction.image}
+                    alt={faction.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <h3 className="text-2xl font-bold mb-3">{faction.name}</h3>
                 <p className="text-gray-300 leading-relaxed">
                   {faction.description}
