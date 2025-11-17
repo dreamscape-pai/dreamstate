@@ -31,9 +31,14 @@ export default function TicketPurchase() {
       const data = await response.json();
       setTicketTypes(data.ticketTypes);
 
-      // Auto-select first ticket type if none selected
+      // Auto-select first available ticket type if none selected
       if (!selectedTicketType && data.ticketTypes.length > 0) {
-        setSelectedTicketType(data.ticketTypes[0].id);
+        const firstAvailable = data.ticketTypes.find(
+          (t: TicketAvailability) => t.remaining === null || t.remaining > 0
+        );
+        if (firstAvailable) {
+          setSelectedTicketType(firstAvailable.id);
+        }
       }
     } catch (err) {
       console.error('Error fetching availability:', err);
@@ -100,9 +105,59 @@ export default function TicketPurchase() {
         )}
 
         <div className="bg-dreamstate-slate/20 p-8 rounded-lg border border-dreamstate-purple/30 space-y-6 font-body">
+          {/* Purchase Button */}
+          <button
+            onClick={handlePurchase}
+            disabled={
+              loading ||
+              !selectedTicket ||
+              (selectedTicket && selectedTicket.remaining !== null && selectedTicket.remaining < quantity)
+            }
+            className="w-full px-6 py-4 bg-dreamstate-purple hover:bg-dreamstate-slate disabled:bg-gray-600 text-dreamstate-ice text-lg font-semibold rounded-lg shadow-lg"
+          >
+            {loading ? 'Processing...' : 'Proceed to Payment'}
+          </button>
+
+          <p className="text-xs text-center text-gray-500">
+            Secure payment powered by Stripe. You will be redirected to complete your purchase.
+          </p>
+
+          {/* Total Price */}
+          {selectedTicket && (
+            <div className="pt-4 border-t border-dreamstate-slate/50">
+              <div className="flex justify-between items-center text-lg mb-4">
+                <span className="font-semibold text-dreamstate-periwinkle">Total</span>
+                <span className="text-2xl font-bold text-dreamstate-lavender">
+                  {formatPrice(selectedTicket.basePriceMinor * quantity, selectedTicket.currency)}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Quantity Selector */}
+          {selectedTicket && (
+            <div>
+              <label className="block text-lg font-semibold mb-3 text-dreamstate-periwinkle uppercase tracking-wide font-subheading">
+                Quantity
+              </label>
+              <select
+                value={quantity}
+                onChange={(e) => setQuantity(parseInt(e.target.value))}
+                className="w-full px-4 py-3 bg-dreamstate-midnight border border-dreamstate-slate rounded-lg text-dreamstate-ice focus:outline-none focus:border-dreamstate-purple"
+                disabled={!selectedTicket || (selectedTicket.remaining !== null && selectedTicket.remaining === 0)}
+              >
+                {Array.from({ length: maxQuantity }, (_, i) => i + 1).map((num) => (
+                  <option key={num} value={num}>
+                    {num} {num === 1 ? 'ticket' : 'tickets'}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           {/* Ticket Type Selection */}
           <div>
-            <label className="block text-sm font-semibold mb-3 text-dreamstate-periwinkle uppercase tracking-wide font-subheading">
+            <label className="block text-lg font-semibold mb-3 text-dreamstate-periwinkle uppercase tracking-wide font-subheading">
               Ticket Type
             </label>
             <div className="space-y-3">
@@ -159,56 +214,6 @@ export default function TicketPurchase() {
               ))}
             </div>
           </div>
-
-          {/* Quantity Selector */}
-          {selectedTicket && (
-            <div>
-              <label className="block text-sm font-semibold mb-3 text-dreamstate-periwinkle uppercase tracking-wide font-subheading">
-                Quantity
-              </label>
-              <select
-                value={quantity}
-                onChange={(e) => setQuantity(parseInt(e.target.value))}
-                className="w-full px-4 py-3 bg-dreamstate-midnight border border-dreamstate-slate rounded-lg text-dreamstate-ice focus:outline-none focus:border-dreamstate-purple"
-                disabled={!selectedTicket || (selectedTicket.remaining !== null && selectedTicket.remaining === 0)}
-              >
-                {Array.from({ length: maxQuantity }, (_, i) => i + 1).map((num) => (
-                  <option key={num} value={num}>
-                    {num} {num === 1 ? 'ticket' : 'tickets'}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          {/* Total Price */}
-          {selectedTicket && (
-            <div className="pt-4 border-t border-dreamstate-slate/50">
-              <div className="flex justify-between items-center text-lg mb-4">
-                <span className="font-semibold text-dreamstate-periwinkle">Total</span>
-                <span className="text-2xl font-bold text-dreamstate-lavender">
-                  {formatPrice(selectedTicket.basePriceMinor * quantity, selectedTicket.currency)}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* Purchase Button */}
-          <button
-            onClick={handlePurchase}
-            disabled={
-              loading ||
-              !selectedTicket ||
-              (selectedTicket.remaining !== null && selectedTicket.remaining < quantity)
-            }
-            className="w-full px-6 py-4 bg-dreamstate-purple hover:bg-dreamstate-slate disabled:bg-gray-600 text-dreamstate-ice text-lg font-semibold rounded-lg shadow-lg"
-          >
-            {loading ? 'Processing...' : 'Proceed to Payment'}
-          </button>
-
-          <p className="text-xs text-center text-gray-500 mt-4">
-            Secure payment powered by Stripe. You will be redirected to complete your purchase.
-          </p>
         </div>
       </div>
     </section>
