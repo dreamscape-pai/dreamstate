@@ -13,6 +13,8 @@
     "db:studio": "drizzle-kit studio",
     "tickets:add": "tsx scripts/add-ticket-types.ts",
     "tickets:update": "tsx scripts/update-ticket-types.ts",
+    "tickets:fix": "tsx scripts/fix-ticket-types.ts",
+    "tickets:view": "tsx scripts/check-ticket-types.ts",
     "orders:view": "tsx scripts/view-orders.ts",
     "tickets:check": "tsx scripts/check-availability.ts"
   },

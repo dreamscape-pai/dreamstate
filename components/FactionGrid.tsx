@@ -35,7 +35,7 @@ export default function FactionGrid() {
   return (
     <section className="relative py-16 px-4 overflow-hidden">
       {/* Background image */}
-      <div className="absolute inset-0 opacity-40">
+      <div className="absolute inset-0 opacity-50">
         <Image
           src="/images/clouds.png"
           alt="Dreamy clouds background"
@@ -43,7 +43,7 @@ export default function FactionGrid() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-dreamstate-midnight/60 via-dreamstate-midnight/70 to-dreamstate-midnight" />
+        <div className="absolute inset-0 bg-gradient-to-b from-dreamstate-midnight via-dreamstate-midnight/30 to-dreamstate-midnight/10" />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
