@@ -4,15 +4,23 @@ export default function Header() {
   return (
     <header className="relative py-16 px-4 text-center border-b border-dreamstate-purple/30 overflow-hidden">
       {/* Background image */}
-      <div className="absolute inset-0 opacity-60">
-        <Image
-          src="/images/chess-in-the-clouds.jpeg"
-          alt="Dreamstate background"
-          fill
-          className="object-cover object-top"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-dreamstate-midnight/20 via-dreamstate-midnight/30 to-dreamstate-midnight" />
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 opacity-60">
+          <Image
+            src="/images/chess-in-the-clouds.jpeg"
+            alt="Dreamstate background"
+            fill
+            className="object-cover object-top"
+            priority
+          />
+        </div>
+        {/* Gradient overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(54,59,61,0.2), rgba(54,59,61,0.3) 50%, rgba(23,25,26,1))'
+          }}
+        ></div>
       </div>
 
       {/* Content */}

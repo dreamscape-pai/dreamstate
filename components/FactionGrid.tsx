@@ -35,15 +35,23 @@ export default function FactionGrid() {
   return (
     <section className="relative py-16 px-4 overflow-hidden">
       {/* Background image */}
-      <div className="absolute inset-0 opacity-50">
-        <Image
-          src="/images/clouds.png"
-          alt="Dreamy clouds background"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-dreamstate-midnight via-dreamstate-midnight/30 to-dreamstate-midnight/10" />
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 opacity-50">
+          <Image
+            src="/images/clouds.png"
+            alt="Dreamy clouds background"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+        {/* Gradient overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(28,30,32,1) 0%, rgba(255,255,255,0.1) 30%, rgba(255,255,255,0.1) 100%)'
+          }}
+        ></div>
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
@@ -56,13 +64,13 @@ export default function FactionGrid() {
         </p>
 
         <div className="mb-16 max-w-[900px] mx-auto bg-dreamstate-slate/30 backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 min-[360px]:grid-cols-2 md:grid-cols-4 gap-8">
             {factions.map((faction) => (
               <div
                 key={faction.name}
                 className="flex flex-col items-center text-center"
               >
-                <div className="w-32 h-32 mb-4 relative rounded-2xl overflow-hidden border-2 border-dreamstate-purple/30">
+                <div className="w-28 h-28 md:w-32 md:h-32 mb-4 relative rounded-2xl overflow-hidden border-2 border-dreamstate-purple/30 transition-transform duration-300 hover:scale-110">
                   <Image
                     src={faction.image}
                     alt={faction.name}
@@ -85,7 +93,7 @@ export default function FactionGrid() {
             Ticket Information
           </h2>
 
-          <div className="space-y-6 text-left bg-dreamstate-slate/30 p-8 rounded-lg border border-dreamstate-purple/30 font-body backdrop-blur-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left bg-dreamstate-slate/30 p-8 rounded-lg border border-dreamstate-purple/30 font-body backdrop-blur-sm">
             <div>
               <h3 className="text-xl font-semibold mb-3 text-dreamstate-lavender font-subheading uppercase tracking-wide">
                 What&apos;s Included
@@ -110,7 +118,7 @@ export default function FactionGrid() {
               </ul>
             </div>
 
-            <div className="pt-4 border-t border-dreamstate-slate/50">
+            <div>
               <h3 className="text-xl font-semibold mb-3 text-dreamstate-lavender font-subheading uppercase tracking-wide">
                 Important Details
               </h3>
