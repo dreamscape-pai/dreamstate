@@ -13,13 +13,15 @@ export default function Hero() {
 
       <div className="relative max-w-4xl mx-auto text-center">
         {/* Hero image */}
-        <div className="mb-8 relative rounded-lg overflow-hidden border border-dreamstate-purple/30 shadow-2xl mx-auto" style={{ width: '400px', height: '600px', maxWidth: '100%' }}>
+        <div className="mb-8 relative rounded-lg overflow-hidden border border-dreamstate-purple/30 shadow-2xl mx-auto w-full max-w-[660px]" style={{ height: '465px' }}>
           <Image
             src="/images/chess-in-the-clouds.jpeg"
             alt="Chess board floating in dreamy clouds"
             fill
             className="object-cover object-bottom"
             priority
+            sizes="(max-width: 660px) 100vw, 660px"
+            style={{ display: 'block' }}
           />
         </div>
 

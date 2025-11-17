@@ -105,10 +105,19 @@ export default function TicketPurchase() {
         )}
 
         <div className="bg-dreamstate-slate/20 p-8 rounded-lg border border-dreamstate-purple/30 space-y-6 font-body">
-          {/* Total Price */}
+          {/* Order Summary */}
           {selectedTicket && (
-            <div className="pt-4 border-t border-dreamstate-slate/50">
-              <div className="flex justify-between items-center text-lg mb-4">
+            <div className="space-y-3 pb-6 border-b border-white/20">
+              {/* Item line */}
+              <div className="flex justify-between items-center text-base text-dreamstate-ice">
+                <span>{selectedTicket.name}</span>
+                <span className="text-gray-400">
+                  {formatPrice(selectedTicket.basePriceMinor, selectedTicket.currency)} × {quantity}
+                </span>
+              </div>
+
+              {/* Total line */}
+              <div className="flex justify-between items-center text-lg pt-3 border-t border-dreamstate-slate/30">
                 <span className="font-semibold text-dreamstate-periwinkle">Total</span>
                 <span className="text-2xl font-bold text-dreamstate-lavender">
                   {formatPrice(selectedTicket.basePriceMinor * quantity, selectedTicket.currency)}

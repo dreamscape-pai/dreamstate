@@ -55,16 +55,14 @@ export default function FactionGrid() {
           a different aspect of the dream experience. Your faction will be revealed after purchase.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-          {factions.map((faction) => (
-            <div
-              key={faction.name}
-              className={`faction-card relative p-8 rounded-lg border-2 ${faction.borderColor} overflow-hidden`}
-            >
-              <div className={`absolute inset-0 ${faction.colorClass} opacity-10`} />
-
-              <div className="relative z-10">
-                <div className="w-24 h-24 mb-4 relative rounded-2xl overflow-hidden border-2 border-dreamstate-purple/30">
+        <div className="mb-16 max-w-[900px] mx-auto bg-dreamstate-slate/30 backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {factions.map((faction) => (
+              <div
+                key={faction.name}
+                className="flex flex-col items-center text-center"
+              >
+                <div className="w-32 h-32 mb-4 relative rounded-2xl overflow-hidden border-2 border-dreamstate-purple/30">
                   <Image
                     src={faction.image}
                     alt={faction.name}
@@ -72,13 +70,13 @@ export default function FactionGrid() {
                     className="object-cover"
                   />
                 </div>
-                <h3 className="text-2xl font-bold mb-3">{faction.name}</h3>
-                <p className="text-gray-300 leading-relaxed">
+                <h3 className="text-xl font-bold mb-3">{faction.name}</h3>
+                <p className="text-gray-300 leading-relaxed text-sm">
                   {faction.description}
                 </p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Ticket Information */}
