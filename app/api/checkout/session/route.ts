@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { ticketTypeId, quantity, customerEmail } = validationResult.data;
+    const { ticketTypeId, quantity } = validationResult.data;
 
     // Fetch ticket type
     const ticketType = await db
@@ -76,7 +76,6 @@ export async function POST(request: NextRequest) {
       ],
       success_url: `${process.env.SITE_BASE_URL}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.SITE_BASE_URL}/?canceled=true`,
-      customer_email: customerEmail,
       metadata: {
         ticketTypeId: ticket.id.toString(),
         quantity: quantity.toString(),

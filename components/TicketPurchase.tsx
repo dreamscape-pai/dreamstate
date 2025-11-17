@@ -104,7 +104,15 @@ export default function TicketPurchase() {
           </div>
         )}
 
-        <div className="bg-dreamstate-slate/20 p-8 rounded-lg border border-dreamstate-purple/30 space-y-6 font-body">
+        {ticketTypes.length === 0 && !error ? (
+          <div className="bg-dreamstate-slate/20 p-12 rounded-lg border border-dreamstate-purple/30">
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-dreamstate-lavender"></div>
+              <p className="text-dreamstate-periwinkle text-lg font-body">Loading tickets...</p>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-dreamstate-slate/20 p-8 rounded-lg border border-dreamstate-purple/30 space-y-6 font-body">
           {/* Order Summary */}
           {selectedTicket && (
             <div className="space-y-3 pb-6 border-b border-white/20">
@@ -224,6 +232,7 @@ export default function TicketPurchase() {
             </div>
           </div>
         </div>
+        )}
       </div>
     </section>
   );
