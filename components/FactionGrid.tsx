@@ -47,7 +47,7 @@ export default function FactionGrid() {
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
+        <h2 className="text-4xl md:text-5xl font-title font-bold text-center mb-4 text-dreamstate-ice">
           Discover Your Faction
         </h2>
         <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
