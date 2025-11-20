@@ -1,5 +1,3 @@
-import { generateQRCodeDataURL } from './qr';
-
 export interface TicketEmailData {
   customerEmail: string;
   ticketNumber: number;
@@ -15,9 +13,7 @@ export interface TicketEmailData {
 export async function generateTicketConfirmationEmail(
   data: TicketEmailData
 ): Promise<{ html: string; subject: string }> {
-  const verificationUrl = `${data.siteUrl}/verify/${data.verificationToken}`;
-  const qrCodeDataURL = await generateQRCodeDataURL(verificationUrl);
-
+  // QR code will be embedded as attachment with CID reference
   const html = `
 <!DOCTYPE html>
 <html>
@@ -62,7 +58,7 @@ export async function generateTicketConfirmationEmail(
               <div style="text-align: center; margin: 30px 0;">
                 <h3 style="color: #c4b5fd; margin-bottom: 20px;">Your Ticket QR Code</h3>
                 <div style="background: white; display: inline-block; padding: 20px; border-radius: 12px;">
-                  <img src="${qrCodeDataURL}" alt="Ticket QR Code" style="display: block; width: 300px; height: 300px;" />
+                  <img src="cid:qrcode" alt="Ticket QR Code" style="display: block; width: 300px; height: 300px;" />
                 </div>
                 <p style="margin: 15px 0 0 0; color: #9ca3af; font-size: 14px;">
                   Ticket #${data.ticketNumber}
