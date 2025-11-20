@@ -147,9 +147,10 @@ export default function VerifyTicketPage() {
             </h1>
             <p className="text-dreamstate-periwinkle">Ticket #{ticketInfo.ticketNumber}</p>
             {ticketInfo.purchaseMethod === 'in_person' && (
-              <p className="mt-2 text-yellow-400 font-semibold">
-                Bought in person - please present your physical ticket
-              </p>
+              <div className="mt-2 text-yellow-400 font-semibold">
+                <p>Bought in person</p>
+                <p>Please show your physical ticket at the door</p>
+              </div>
             )}
             {ticketInfo.purchaseMethod === 'online' && (
               <p className="mt-2 text-dreamstate-periwinkle">
