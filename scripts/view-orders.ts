@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
 import * as dotenv from 'dotenv';
-import { ticketOrders, factions, ticketTypes } from '../lib/db/schema';
+import { ticketOrders, factions, ticketTypes, tickets } from '../lib/db/schema';
 import { eq, desc } from 'drizzle-orm';
 
 dotenv.config();
@@ -16,15 +16,13 @@ async function viewOrders() {
 
   console.log('📊 Dreamstate Orders Report\n');
 
-  // Get all orders with details
+  // Get all orders with ticket details
   const orders = await db
     .select({
       order: ticketOrders,
-      faction: factions,
       ticketType: ticketTypes,
     })
     .from(ticketOrders)
-    .innerJoin(factions, eq(ticketOrders.assignedFactionId, factions.id))
     .innerJoin(ticketTypes, eq(ticketOrders.ticketTypeId, ticketTypes.id))
     .orderBy(desc(ticketOrders.createdAt));
 
@@ -33,15 +31,26 @@ async function viewOrders() {
     process.exit(0);
   }
 
-  console.log(`Total Orders: ${orders.length}\n`);
+  console.log(`Total Orders: ${orders.length}`);
+
+  // Get all tickets with factions
+  const allTickets = await db
+    .select({
+      ticket: tickets,
+      faction: factions,
+    })
+    .from(tickets)
+    .innerJoin(factions, eq(tickets.assignedFactionId, factions.id));
+
+  console.log(`Total Tickets: ${allTickets.length}\n`);
 
   // Summary by faction
   const factionCounts: Record<string, number> = {};
-  orders.forEach(({ faction }) => {
+  allTickets.forEach(({ faction }) => {
     factionCounts[faction.displayName] = (factionCounts[faction.displayName] || 0) + 1;
   });
 
-  console.log('Faction Distribution:');
+  console.log('Faction Distribution (by ticket):');
   Object.entries(factionCounts).forEach(([name, count]) => {
     console.log(`  ${name}: ${count}`);
   });
@@ -61,31 +70,27 @@ async function viewOrders() {
 
   // Recent orders
   console.log('Recent Orders (last 10):');
-  console.log('─'.repeat(120));
+  console.log('─'.repeat(100));
   console.log(
-    'Seq#'.padEnd(6) +
     'Email'.padEnd(30) +
-    'Ticket Type'.padEnd(20) +
+    'Ticket Type'.padEnd(25) +
     'Qty'.padEnd(5) +
-    'Faction'.padEnd(15) +
     'Status'.padEnd(10) +
     'Date'
   );
-  console.log('─'.repeat(120));
+  console.log('─'.repeat(100));
 
-  orders.slice(0, 10).forEach(({ order, faction, ticketType }) => {
+  orders.slice(0, 10).forEach(({ order, ticketType }) => {
     console.log(
-      `${order.orderSequenceNumber}`.padEnd(6) +
       order.customerEmail.padEnd(30) +
-      ticketType.name.substring(0, 19).padEnd(20) +
+      ticketType.name.substring(0, 24).padEnd(25) +
       `${order.quantity}`.padEnd(5) +
-      faction.displayName.padEnd(15) +
       order.status.padEnd(10) +
       order.createdAt.toISOString().substring(0, 16)
     );
   });
 
-  console.log('─'.repeat(120));
+  console.log('─'.repeat(100));
 
   // Total revenue
   const totalRevenue = orders
