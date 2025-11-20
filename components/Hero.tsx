@@ -31,17 +31,17 @@ export default function Hero() {
               Step into a world where reality bends and the impossible becomes tangible. Dreamstate invites you to experience an unforgettable fusion of circus artistry and subconscious exploration.
             </p>
 
-            <p>
+            <button
+              onClick={scrollToTickets}
+              className="mt-6 px-8 py-4 bg-dreamstate-purple hover:bg-dreamstate-slate text-dreamstate-ice text-lg font-semibold rounded-lg shadow-lg"
+            >
+              Buy Tickets
+            </button>
+
+            <p className="pt-4">
               As the event unfolds, you&apos;ll be drawn into our Faction System—four unique realms of the dreamworld that every guest will be placed into upon arrival:
             </p>
           </div>
-
-          <button
-            onClick={scrollToTickets}
-            className="mt-8 px-8 py-4 bg-dreamstate-purple hover:bg-dreamstate-slate text-dreamstate-ice text-lg font-semibold rounded-lg shadow-lg"
-          >
-            Buy Tickets
-          </button>
         </div>
       </div>
     </section>

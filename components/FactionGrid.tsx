@@ -88,7 +88,7 @@ export default function FactionGrid() {
         </div>
 
         {/* Event Description */}
-        <div className="max-w-3xl mx-auto mt-16 mb-16">
+        <div className="max-w-3xl mx-auto mt-16 mb-16 bg-dreamstate-slate/30 backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40">
           <div className="text-base md:text-lg text-dreamstate-ice leading-relaxed font-body space-y-4">
             <p>
               Your faction becomes your identity within the Dreamstate, shaping how you move through the story, challenges, and surprises. Expect immersive, live circus theatre all around you: characters who blur the line between performer and dream-guide, cryptic encounters, and playful trials designed to unlock your intuition, creativity, and curiosity.
