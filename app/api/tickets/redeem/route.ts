@@ -1,65 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { physicalTickets, ticketOrders, tickets, ticketCounter, ticketTypes, factions } from '@/lib/db/schema';
-import { eq, and, sql } from 'drizzle-orm';
+import { ticketOrders, tickets, ticketCounter, factions } from '@/lib/db/schema';
+import { eq, sql } from 'drizzle-orm';
 import { assignFaction, getFactionIdFromIndex } from '@/lib/types';
+import { randomBytes } from 'crypto';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { code, name, email } = body;
+    const { name, email } = body;
 
-    if (!code || !name || !email) {
+    if (!name || !email) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       );
     }
 
-    // 1. Find the physical ticket
-    const physicalTicket = await db
-      .select()
-      .from(physicalTickets)
-      .where(eq(physicalTickets.code, code))
-      .limit(1);
+    // Generate a unique order ID for in-person tickets
+    const uniqueId = randomBytes(8).toString('hex');
 
-    if (!physicalTicket.length) {
-      return NextResponse.json(
-        { error: 'Invalid ticket code' },
-        { status: 404 }
-      );
-    }
+    // Use a default ticket type ID for in-person purchases (you can make this configurable)
+    // For now, using ticket type 1 (First Mover)
+    const inPersonTicketTypeId = 1;
 
-    const ticket = physicalTicket[0];
-
-    // 2. Check if already redeemed
-    if (ticket.isRedeemed) {
-      return NextResponse.json(
-        { error: 'This ticket has already been redeemed' },
-        { status: 400 }
-      );
-    }
-
-    // 3. Get ticket type
-    const ticketType = await db
-      .select()
-      .from(ticketTypes)
-      .where(eq(ticketTypes.id, ticket.ticketTypeId))
-      .limit(1);
-
-    if (!ticketType.length) {
-      return NextResponse.json(
-        { error: 'Ticket type not found' },
-        { status: 404 }
-      );
-    }
-
-    // 4. Create order
+    // 1. Create order
     const orderResult = await db.insert(ticketOrders).values({
-      stripeCheckoutSessionId: `in-person-${code}`,
+      stripeCheckoutSessionId: `in-person-${uniqueId}`,
       stripePaymentIntentId: null,
       customerEmail: email,
-      ticketTypeId: ticket.ticketTypeId,
+      ticketTypeId: inPersonTicketTypeId,
       quantity: 1,
       status: 'PAID_IN_PERSON',
     }).returning({ id: ticketOrders.id });
@@ -70,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     const orderId = orderResult[0].id;
 
-    // 5. Increment ticket counter and assign faction
+    // 2. Increment ticket counter and assign faction
     const counterResult = await db
       .update(ticketCounter)
       .set({ currentValue: sql`${ticketCounter.currentValue} + 1` })
@@ -85,24 +55,14 @@ export async function POST(request: NextRequest) {
     const factionIndex = assignFaction(ticketNumber);
     const assignedFactionId = getFactionIdFromIndex(factionIndex);
 
-    // 6. Create ticket record
+    // 3. Create ticket record
     await db.insert(tickets).values({
       orderId,
       ticketNumber,
       assignedFactionId,
     });
 
-    // 7. Mark physical ticket as redeemed
-    await db
-      .update(physicalTickets)
-      .set({
-        isRedeemed: true,
-        redeemedAt: new Date(),
-        orderId,
-      })
-      .where(eq(physicalTickets.id, ticket.id));
-
-    // 8. Get faction details
+    // 4. Get faction details
     const faction = await db
       .select()
       .from(factions)
@@ -113,7 +73,7 @@ export async function POST(request: NextRequest) {
       throw new Error('Faction not found');
     }
 
-    console.log(`✅ In-person ticket redeemed: Code ${code}, Ticket #${ticketNumber}, Faction: ${faction[0].displayName}`);
+    console.log(`✅ In-person ticket activated: ${email}, Ticket #${ticketNumber}, Faction: ${faction[0].displayName}`);
 
     return NextResponse.json({
       success: true,

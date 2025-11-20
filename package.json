@@ -15,7 +15,6 @@
     "tickets:update": "tsx scripts/update-ticket-types.ts",
     "tickets:fix": "tsx scripts/fix-ticket-types.ts",
     "tickets:view": "tsx scripts/check-ticket-types.ts",
-    "tickets:generate-physical": "tsx scripts/generate-physical-tickets.ts",
     "orders:view": "tsx scripts/view-orders.ts",
     "tickets:check": "tsx scripts/check-availability.ts"
   },

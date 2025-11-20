@@ -1,14 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
-import type { FactionInfo } from '@/lib/types';
 
 export default function RedeemPage() {
-  const params = useParams();
   const router = useRouter();
-  const code = params.code as string;
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -24,7 +21,7 @@ export default function RedeemPage() {
       const response = await fetch('/api/tickets/redeem', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, name, email }),
+        body: JSON.stringify({ name, email }),
       });
 
       const data = await response.json();
@@ -53,10 +50,10 @@ export default function RedeemPage() {
         <div className="max-w-md w-full">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-title font-bold mb-4 text-dreamstate-ice">
-              Redeem Your Ticket
+              Activate Your Ticket
             </h1>
             <p className="text-dreamstate-periwinkle font-body">
-              Enter your details to activate your ticket and discover your faction
+              Enter your details to discover your faction assignment
             </p>
           </div>
 
@@ -103,7 +100,7 @@ export default function RedeemPage() {
                 disabled={loading}
                 className="w-full px-6 py-4 bg-dreamstate-purple hover:bg-dreamstate-slate disabled:bg-gray-600 text-dreamstate-ice text-lg font-semibold rounded-lg shadow-lg font-body"
               >
-                {loading ? 'Processing...' : 'Activate Ticket'}
+                {loading ? 'Processing...' : 'Discover Your Faction'}
               </button>
             </form>
 
