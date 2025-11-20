@@ -144,7 +144,7 @@ export default function TicketPurchase() {
               <select
                 value={quantity}
                 onChange={(e) => setQuantity(parseInt(e.target.value))}
-                className="w-full px-4 py-3 bg-dreamstate-midnight border border-dreamstate-slate rounded-lg text-dreamstate-ice focus:outline-none focus:border-dreamstate-purple"
+                className="w-full pl-4 pr-10 py-3 bg-dreamstate-midnight border border-dreamstate-slate rounded-lg text-dreamstate-ice focus:outline-none focus:border-dreamstate-purple"
                 disabled={!selectedTicket || (selectedTicket.remaining !== null && selectedTicket.remaining === 0)}
               >
                 {Array.from({ length: maxQuantity }, (_, i) => i + 1).map((num) => (
