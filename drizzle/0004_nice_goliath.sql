@@ -1,0 +1,1 @@
+ALTER TABLE "tickets" ADD COLUMN "purchase_method" varchar(20) DEFAULT 'online' NOT NULL;

@@ -9,6 +9,7 @@ interface TicketInfo {
   ticketNumber: number;
   isVerified: boolean;
   verifiedAt: string | null;
+  purchaseMethod: string;
   faction: {
     displayName: string;
     description: string;
@@ -145,6 +146,16 @@ export default function VerifyTicketPage() {
               Your Dreamstate Ticket
             </h1>
             <p className="text-dreamstate-periwinkle">Ticket #{ticketInfo.ticketNumber}</p>
+            {ticketInfo.purchaseMethod === 'in_person' && (
+              <p className="mt-2 text-yellow-400 font-semibold">
+                Bought in person - please present your physical ticket
+              </p>
+            )}
+            {ticketInfo.purchaseMethod === 'online' && (
+              <p className="mt-2 text-dreamstate-periwinkle">
+                Bought online
+              </p>
+            )}
           </div>
 
           {/* Ticket Status / Admin Actions */}

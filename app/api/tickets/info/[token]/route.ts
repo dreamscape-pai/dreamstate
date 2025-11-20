@@ -24,6 +24,7 @@ export async function GET(
         factionId: tickets.assignedFactionId,
         isVerified: tickets.isVerified,
         verifiedAt: tickets.verifiedAt,
+        purchaseMethod: tickets.purchaseMethod,
       })
       .from(tickets)
       .where(eq(tickets.verificationToken, token))
@@ -54,6 +55,7 @@ export async function GET(
       ticketNumber: Number(ticket[0].ticketNumber),
       isVerified: ticket[0].isVerified,
       verifiedAt: ticket[0].verifiedAt,
+      purchaseMethod: ticket[0].purchaseMethod,
       faction: {
         displayName: faction[0].displayName,
         description: faction[0].description,

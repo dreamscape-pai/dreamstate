@@ -87,6 +87,7 @@ export async function POST(request: NextRequest) {
       ticketNumber,
       assignedFactionId,
       verificationToken,
+      purchaseMethod: 'in_person',
     });
 
     // 4. Get faction details

@@ -62,6 +62,7 @@ export const tickets = pgTable('tickets', {
   verificationToken: varchar('verification_token', { length: 255 }).notNull().unique(),
   isVerified: boolean('is_verified').notNull().default(false),
   verifiedAt: timestamp('verified_at'),
+  purchaseMethod: varchar('purchase_method', { length: 20 }).notNull().default('online'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (table) => {
   return {
