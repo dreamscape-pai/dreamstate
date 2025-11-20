@@ -93,7 +93,6 @@ export default function VerifyTicketPage() {
       <div className="flex items-center justify-center px-4 py-16">
         <div className="max-w-2xl w-full">
           <div className="text-center mb-8">
-            <div className="text-6xl mb-4">🎫</div>
             <h1 className="text-4xl font-title font-bold text-dreamstate-ice mb-2">
               Your Dreamstate Ticket
             </h1>
