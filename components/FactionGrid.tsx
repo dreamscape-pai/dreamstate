@@ -91,7 +91,11 @@ export default function FactionGrid() {
         <div className="max-w-3xl mx-auto mt-16 mb-16 backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40" style={{ backgroundColor: 'rgba(24,33,55,0.6)' }}>
           <div className="text-base md:text-lg text-dreamstate-ice leading-relaxed font-body space-y-4">
             <p>
-              Your faction becomes your identity within the Dreamstate, shaping how you move through the story, challenges, and surprises. Expect immersive, live circus theatre all around you: characters who blur the line between performer and dream-guide, cryptic encounters, and playful trials designed to unlock your intuition, creativity, and curiosity.
+              Your faction becomes your identity within the Dreamstate, shaping how you move through the story, challenges, and surprises.
+            </p>
+
+            <p>
+              Expect immersive, live circus theatre all around you: characters who blur the line between performer and dream-guide, cryptic encounters, and playful trials designed to unlock your intuition, creativity, and curiosity.
             </p>
 
             <p>
@@ -99,7 +103,11 @@ export default function FactionGrid() {
             </p>
 
             <p>
-              And as the narrative reaches its peak, we shift into celebration. Step into Dreamscape&apos;s massive amphitheatre into the glow of the Fire Jam, where flame, music, and motion converge in an electric gathering of flow artists. Then drift deeper into the dream with our late-night Dome Party, featuring immersive projections, hypnotic soundscapes, and DJs guiding you into the liminal hours.
+              And as the narrative reaches its peak, we shift into celebration. Step into Dreamscape&apos;s massive amphitheatre into the glow of the Fire Jam, where flame, music, and motion converge in an electric gathering of flow artists.
+            </p>
+
+            <p>
+              Then drift deeper into the dream with our late-night Dome Party, featuring immersive projections, hypnotic soundscapes, and DJs guiding you into the liminal hours.
             </p>
 
             <p className="italic font-bold text-dreamstate-periwinkle">
