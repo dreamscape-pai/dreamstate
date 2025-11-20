@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { ticketOrders, tickets, ticketCounter, factions } from '@/lib/db/schema';
-import { eq, sql } from 'drizzle-orm';
+import { eq, sql, and } from 'drizzle-orm';
 import { assignFaction, getFactionIdFromIndex } from '@/lib/types';
 import { randomBytes } from 'crypto';
 
@@ -17,6 +17,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Normalize email to lowercase for case-insensitive comparison
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // Check if this email has already redeemed an in-person ticket
+    const existingOrder = await db
+      .select()
+      .from(ticketOrders)
+      .where(
+        and(
+          sql`LOWER(${ticketOrders.customerEmail}) = ${normalizedEmail}`,
+          eq(ticketOrders.status, 'PAID_IN_PERSON')
+        )
+      )
+      .limit(1);
+
+    if (existingOrder.length > 0) {
+      return NextResponse.json(
+        { error: 'This email has already been used to redeem a ticket' },
+        { status: 400 }
+      );
+    }
+
     // Generate a unique order ID for in-person tickets
     const uniqueId = randomBytes(8).toString('hex');
 
@@ -28,7 +50,7 @@ export async function POST(request: NextRequest) {
     const orderResult = await db.insert(ticketOrders).values({
       stripeCheckoutSessionId: `in-person-${uniqueId}`,
       stripePaymentIntentId: null,
-      customerEmail: email,
+      customerEmail: normalizedEmail,
       ticketTypeId: inPersonTicketTypeId,
       quantity: 1,
       status: 'PAID_IN_PERSON',
@@ -73,7 +95,7 @@ export async function POST(request: NextRequest) {
       throw new Error('Faction not found');
     }
 
-    console.log(`✅ In-person ticket activated: ${email}, Ticket #${ticketNumber}, Faction: ${faction[0].displayName}`);
+    console.log(`✅ In-person ticket activated: ${normalizedEmail}, Ticket #${ticketNumber}, Faction: ${faction[0].displayName}`);
 
     return NextResponse.json({
       success: true,
