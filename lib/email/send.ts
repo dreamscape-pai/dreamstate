@@ -7,8 +7,12 @@ export async function sendTicketConfirmationEmail(data: TicketEmailData) {
   try {
     const { html, subject } = await generateTicketConfirmationEmail(data);
 
+    if (!process.env.EMAIL_FROM) {
+      throw new Error('EMAIL_FROM environment variable is not set');
+    }
+
     const result = await resend.emails.send({
-      from: process.env.EMAIL_FROM || 'Dreamstate <onboarding@resend.dev>',
+      from: process.env.EMAIL_FROM,
       to: [data.customerEmail],
       subject,
       html,
