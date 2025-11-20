@@ -21,8 +21,8 @@ export async function POST(request: NextRequest) {
     const uniqueId = randomBytes(8).toString('hex');
 
     // Use a default ticket type ID for in-person purchases (you can make this configurable)
-    // For now, using ticket type 1 (First Mover)
-    const inPersonTicketTypeId = 1;
+    // Using ticket type 5 (First Mover - Tier 1)
+    const inPersonTicketTypeId = 5;
 
     // 1. Create order
     const orderResult = await db.insert(ticketOrders).values({
