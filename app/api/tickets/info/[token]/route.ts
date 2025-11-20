@@ -22,6 +22,8 @@ export async function GET(
       .select({
         ticketNumber: tickets.ticketNumber,
         factionId: tickets.assignedFactionId,
+        isVerified: tickets.isVerified,
+        verifiedAt: tickets.verifiedAt,
       })
       .from(tickets)
       .where(eq(tickets.verificationToken, token))
@@ -50,6 +52,8 @@ export async function GET(
 
     return NextResponse.json({
       ticketNumber: Number(ticket[0].ticketNumber),
+      isVerified: ticket[0].isVerified,
+      verifiedAt: ticket[0].verifiedAt,
       faction: {
         displayName: faction[0].displayName,
         description: faction[0].description,
