@@ -39,7 +39,7 @@ export default function Hero() {
             </button>
 
             <p className="pt-4">
-              As the event unfolds, you&apos;ll be drawn into our Faction System—four unique realms of the dreamworld that every guest will be placed into upon arrival:
+              As the event unfolds, you&apos;ll be drawn into our Faction System—four unique realms of the dreamworld that every guest will be placed into upon arrival.
             </p>
           </div>
         </div>

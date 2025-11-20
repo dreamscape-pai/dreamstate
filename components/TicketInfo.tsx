@@ -6,7 +6,7 @@ export default function TicketInfo() {
           Ticket Information
         </h2>
 
-        <div className="space-y-6 text-left bg-gray-900/50 p-8 rounded-lg border border-gray-700">
+        <div className="space-y-6 text-left backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40" style={{ backgroundColor: 'rgba(24,33,55,0.6)' }}>
           <div>
             <h3 className="text-xl font-semibold mb-3 text-purple-400">
               What&apos;s Included
@@ -31,7 +31,7 @@ export default function TicketInfo() {
             </ul>
           </div>
 
-          <div className="pt-4 border-t border-gray-700">
+          <div className="pt-4 border-t border-dreamstate-lavender/40">
             <h3 className="text-xl font-semibold mb-3 text-purple-400">
               Important Details
             </h3>
