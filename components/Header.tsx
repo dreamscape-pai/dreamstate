@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Header() {
   return (
@@ -25,9 +26,11 @@ export default function Header() {
 
       {/* Content */}
       <div className="relative z-10">
-        <h1 className="text-6xl md:text-8xl font-title font-bold tracking-tight mb-4 text-dreamstate-ice">
-          Dreamstate
-        </h1>
+        <Link href="/">
+          <h1 className="text-6xl md:text-8xl font-title font-bold tracking-tight mb-4 text-dreamstate-ice cursor-pointer hover:text-dreamstate-lavender transition-colors">
+            Dreamstate
+          </h1>
+        </Link>
         <p className="text-2xl md:text-3xl font-subheading text-dreamstate-lavender uppercase tracking-wide">
           Where circus meets the subconscious
         </p>
