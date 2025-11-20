@@ -63,7 +63,7 @@ export default function FactionGrid() {
           a different aspect of the dream experience. Your faction will be revealed after purchase.
         </p>
 
-        <div className="mb-16 max-w-[900px] mx-auto bg-dreamstate-slate/30 backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40">
+        <div className="mb-16 max-w-[900px] mx-auto backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40" style={{ backgroundColor: 'rgba(24,33,55,0.6)' }}>
           <div className="grid grid-cols-1 min-[360px]:grid-cols-2 md:grid-cols-4 gap-8">
             {factions.map((faction) => (
               <div
@@ -88,7 +88,7 @@ export default function FactionGrid() {
         </div>
 
         {/* Event Description */}
-        <div className="max-w-3xl mx-auto mt-16 mb-16 bg-dreamstate-slate/30 backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40">
+        <div className="max-w-3xl mx-auto mt-16 mb-16 backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40" style={{ backgroundColor: 'rgba(24,33,55,0.6)' }}>
           <div className="text-base md:text-lg text-dreamstate-ice leading-relaxed font-body space-y-4">
             <p>
               Your faction becomes your identity within the Dreamstate, shaping how you move through the story, challenges, and surprises. Expect immersive, live circus theatre all around you: characters who blur the line between performer and dream-guide, cryptic encounters, and playful trials designed to unlock your intuition, creativity, and curiosity.
@@ -102,7 +102,7 @@ export default function FactionGrid() {
               And as the narrative reaches its peak, we shift into celebration. Step into Dreamscape&apos;s massive amphitheatre into the glow of the Fire Jam, where flame, music, and motion converge in an electric gathering of flow artists. Then drift deeper into the dream with our late-night Dome Party, featuring immersive projections, hypnotic soundscapes, and DJs guiding you into the liminal hours.
             </p>
 
-            <p className="italic text-dreamstate-periwinkle">
+            <p className="italic font-bold text-dreamstate-periwinkle">
               Enter with an open mind, leave with a story that feels like it followed you from sleep.
             </p>
           </div>
