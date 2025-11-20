@@ -4,7 +4,7 @@ import { pgTable, serial, varchar, text, integer, boolean, bigint, timestamp, pg
 export const factionEnum = pgEnum('faction', ['DEJA_VU', 'LUCID', 'HYPNOTIC', 'DRIFT']);
 
 // Order status enum
-export const orderStatusEnum = pgEnum('order_status', ['PENDING', 'PAID', 'CANCELED', 'REFUNDED']);
+export const orderStatusEnum = pgEnum('order_status', ['PENDING', 'PAID', 'PAID_IN_PERSON', 'CANCELED', 'REFUNDED']);
 
 // Faction table
 export const factions = pgTable('factions', {
@@ -72,6 +72,23 @@ export const ticketCounter = pgTable('ticket_counter', {
   currentValue: bigint('current_value', { mode: 'number' }).notNull().default(0),
 });
 
+// Physical Tickets table (for in-person purchases with QR codes)
+export const physicalTickets = pgTable('physical_tickets', {
+  id: serial('id').primaryKey(),
+  code: varchar('code', { length: 50 }).notNull().unique(),
+  ticketTypeId: integer('ticket_type_id')
+    .notNull()
+    .references(() => ticketTypes.id),
+  isRedeemed: boolean('is_redeemed').notNull().default(false),
+  redeemedAt: timestamp('redeemed_at'),
+  orderId: integer('order_id').references(() => ticketOrders.id),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+}, (table) => {
+  return {
+    codeIdx: uniqueIndex('physical_ticket_code_idx').on(table.code),
+  };
+});
+
 // Type exports for TypeScript
 export type Faction = typeof factions.$inferSelect;
 export type NewFaction = typeof factions.$inferInsert;
@@ -87,3 +104,6 @@ export type NewTicket = typeof tickets.$inferInsert;
 
 export type TicketCounter = typeof ticketCounter.$inferSelect;
 export type NewTicketCounter = typeof ticketCounter.$inferInsert;
+
+export type PhysicalTicket = typeof physicalTickets.$inferSelect;
+export type NewPhysicalTicket = typeof physicalTickets.$inferInsert;
