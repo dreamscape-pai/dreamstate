@@ -87,6 +87,27 @@ export default function FactionGrid() {
           </div>
         </div>
 
+        {/* Event Description */}
+        <div className="max-w-3xl mx-auto mt-16 mb-16">
+          <div className="text-base md:text-lg text-dreamstate-ice leading-relaxed font-body space-y-4">
+            <p>
+              Your faction becomes your identity within the Dreamstate, shaping how you move through the story, challenges, and surprises. Expect immersive, live circus theatre all around you: characters who blur the line between performer and dream-guide, cryptic encounters, and playful trials designed to unlock your intuition, creativity, and curiosity.
+            </p>
+
+            <p>
+              Join faction-led interactive games throughout the night to earn points, discover hidden clues, and compete for prizes! Nothing is quite what it seems—but everything is connected.
+            </p>
+
+            <p>
+              And as the narrative reaches its peak, we shift into celebration. Step into Dreamscape&apos;s massive amphitheatre into the glow of the Fire Jam, where flame, music, and motion converge in an electric gathering of flow artists. Then drift deeper into the dream with our late-night Dome Party, featuring immersive projections, hypnotic soundscapes, and DJs guiding you into the liminal hours.
+            </p>
+
+            <p className="italic text-dreamstate-periwinkle">
+              Enter with an open mind, leave with a story that feels like it followed you from sleep.
+            </p>
+          </div>
+        </div>
+
         {/* Ticket Information */}
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-title font-bold mb-6 text-dreamstate-ice">
