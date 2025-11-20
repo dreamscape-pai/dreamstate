@@ -59,10 +59,14 @@ export const tickets = pgTable('tickets', {
   assignedFactionId: integer('assigned_faction_id')
     .notNull()
     .references(() => factions.id),
+  verificationToken: varchar('verification_token', { length: 255 }).notNull().unique(),
+  isVerified: boolean('is_verified').notNull().default(false),
+  verifiedAt: timestamp('verified_at'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 }, (table) => {
   return {
     ticketNumberIdx: uniqueIndex('ticket_number_idx').on(table.ticketNumber),
+    verificationTokenIdx: uniqueIndex('verification_token_idx').on(table.verificationToken),
   };
 });
 

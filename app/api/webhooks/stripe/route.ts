@@ -4,6 +4,8 @@ import { db } from '@/lib/db';
 import { ticketOrders, ticketTypes, ticketCounter, factions, tickets } from '@/lib/db/schema';
 import { eq, and, inArray, sql } from 'drizzle-orm';
 import { assignFaction, getFactionIdFromIndex } from '@/lib/types';
+import { randomBytes } from 'crypto';
+import { sendTicketConfirmationEmail } from '@/lib/email/send';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-02-24.acacia',
@@ -150,21 +152,54 @@ async function processCompletedCheckout(session: Stripe.Checkout.Session) {
       const factionIndex = assignFaction(ticketNumber);
       const assignedFactionId = getFactionIdFromIndex(factionIndex);
 
+      // Generate unique verification token
+      const verificationToken = randomBytes(32).toString('hex');
+
       ticketInserts.push({
         orderId,
         ticketNumber,
         assignedFactionId,
+        verificationToken,
       });
     }
 
     // Insert all tickets
-    await db.insert(tickets).values(ticketInserts);
+    const createdTickets = await db.insert(tickets).values(ticketInserts).returning();
 
     console.log(
       `✅ Order created: Session ${session.id}, ${quantity} ticket(s) with numbers: ${ticketInserts.map(t => t.ticketNumber).join(', ')}`
     );
 
-    // TODO: Send confirmation email to customer with faction assignment
+    // Send confirmation email for each ticket
+    for (const ticket of createdTickets) {
+      // Get faction details
+      const factionDetails = await db
+        .select()
+        .from(factions)
+        .where(eq(factions.id, ticket.assignedFactionId))
+        .limit(1);
+
+      if (factionDetails.length > 0) {
+        const faction = factionDetails[0];
+
+        try {
+          await sendTicketConfirmationEmail({
+            customerEmail,
+            ticketNumber: Number(ticket.ticketNumber),
+            verificationToken: ticket.verificationToken,
+            faction: {
+              displayName: faction.displayName,
+              description: faction.description,
+              colorToken: faction.colorToken,
+            },
+            siteUrl: process.env.SITE_BASE_URL || 'https://dreamstate.dream.sc',
+          });
+        } catch (emailError) {
+          console.error(`Failed to send email for ticket #${ticket.ticketNumber}:`, emailError);
+          // Don't fail the webhook if email fails
+        }
+      }
+    }
   } catch (error) {
     console.error('Error in processCompletedCheckout:', error);
     throw error;

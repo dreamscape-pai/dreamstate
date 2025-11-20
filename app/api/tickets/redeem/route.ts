@@ -4,6 +4,7 @@ import { ticketOrders, tickets, ticketCounter, factions } from '@/lib/db/schema'
 import { eq, sql, and } from 'drizzle-orm';
 import { assignFaction, getFactionIdFromIndex } from '@/lib/types';
 import { randomBytes } from 'crypto';
+import { sendTicketConfirmationEmail } from '@/lib/email/send';
 
 export async function POST(request: NextRequest) {
   try {
@@ -77,11 +78,15 @@ export async function POST(request: NextRequest) {
     const factionIndex = assignFaction(ticketNumber);
     const assignedFactionId = getFactionIdFromIndex(factionIndex);
 
+    // Generate unique verification token
+    const verificationToken = randomBytes(32).toString('hex');
+
     // 3. Create ticket record
     await db.insert(tickets).values({
       orderId,
       ticketNumber,
       assignedFactionId,
+      verificationToken,
     });
 
     // 4. Get faction details
@@ -96,6 +101,24 @@ export async function POST(request: NextRequest) {
     }
 
     console.log(`✅ In-person ticket activated: ${normalizedEmail}, Ticket #${ticketNumber}, Faction: ${faction[0].displayName}`);
+
+    // Send confirmation email with QR code
+    try {
+      await sendTicketConfirmationEmail({
+        customerEmail: normalizedEmail,
+        ticketNumber,
+        verificationToken,
+        faction: {
+          displayName: faction[0].displayName,
+          description: faction[0].description,
+          colorToken: faction[0].colorToken,
+        },
+        siteUrl: process.env.SITE_BASE_URL || 'https://dreamstate.dream.sc',
+      });
+    } catch (emailError) {
+      console.error(`Failed to send email for ticket #${ticketNumber}:`, emailError);
+      // Don't fail the request if email fails
+    }
 
     return NextResponse.json({
       success: true,
