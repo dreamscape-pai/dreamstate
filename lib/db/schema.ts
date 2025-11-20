@@ -40,21 +40,33 @@ export const ticketOrders = pgTable('ticket_orders', {
     .notNull()
     .references(() => ticketTypes.id),
   quantity: integer('quantity').notNull(),
-  orderSequenceNumber: bigint('order_sequence_number', { mode: 'number' }).notNull().unique(),
-  assignedFactionId: integer('assigned_faction_id')
-    .notNull()
-    .references(() => factions.id),
   status: orderStatusEnum('status').notNull().default('PENDING'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 }, (table) => {
   return {
     sessionIdx: uniqueIndex('session_idx').on(table.stripeCheckoutSessionId),
-    sequenceIdx: uniqueIndex('sequence_idx').on(table.orderSequenceNumber),
   };
 });
 
-// TicketCounter table (for sequential order numbers)
+// Individual Tickets table
+export const tickets = pgTable('tickets', {
+  id: serial('id').primaryKey(),
+  orderId: integer('order_id')
+    .notNull()
+    .references(() => ticketOrders.id),
+  ticketNumber: bigint('ticket_number', { mode: 'number' }).notNull().unique(),
+  assignedFactionId: integer('assigned_faction_id')
+    .notNull()
+    .references(() => factions.id),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+}, (table) => {
+  return {
+    ticketNumberIdx: uniqueIndex('ticket_number_idx').on(table.ticketNumber),
+  };
+});
+
+// TicketCounter table (for sequential ticket numbers)
 export const ticketCounter = pgTable('ticket_counter', {
   id: integer('id').primaryKey().default(1),
   currentValue: bigint('current_value', { mode: 'number' }).notNull().default(0),
@@ -69,6 +81,9 @@ export type NewTicketType = typeof ticketTypes.$inferInsert;
 
 export type TicketOrder = typeof ticketOrders.$inferSelect;
 export type NewTicketOrder = typeof ticketOrders.$inferInsert;
+
+export type Ticket = typeof tickets.$inferSelect;
+export type NewTicket = typeof tickets.$inferInsert;
 
 export type TicketCounter = typeof ticketCounter.$inferSelect;
 export type NewTicketCounter = typeof ticketCounter.$inferInsert;

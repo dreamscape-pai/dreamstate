@@ -99,28 +99,33 @@ function ThankYouContent() {
             </p>
           </div>
 
-          {/* Faction Card */}
-          <div className="relative overflow-hidden rounded-2xl border-2 border-dreamstate-purple/50 shadow-2xl mb-8 bg-dreamstate-slate/30 backdrop-blur-md">
-            <div className="relative z-10 p-8 md:p-12 text-center">
-              <div className="mb-6">
-                <div className="w-32 h-32 mx-auto relative rounded-2xl overflow-hidden border-2 border-dreamstate-purple/30">
-                  <Image
-                    src={getFactionImage(orderInfo.faction.displayName)}
-                    alt={orderInfo.faction.displayName}
-                    fill
-                    className="object-cover"
-                  />
+          {/* Faction Cards */}
+          <div className="space-y-6 mb-8">
+            {orderInfo.tickets.map((ticket, index) => (
+              <div key={ticket.ticketNumber} className="relative overflow-hidden rounded-2xl border-2 border-dreamstate-purple/50 shadow-2xl bg-dreamstate-slate/30 backdrop-blur-md">
+                <div className="relative z-10 p-8 md:p-12 text-center">
+                  <div className="mb-6">
+                    <div className="w-32 h-32 mx-auto relative rounded-2xl overflow-hidden border-2 border-dreamstate-purple/30">
+                      <Image
+                        src={getFactionImage(ticket.faction.displayName)}
+                        alt={ticket.faction.displayName}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+
+                  <h2 className="text-3xl md:text-4xl font-title font-bold mb-2 text-dreamstate-ice">
+                    {orderInfo.tickets.length > 1 && `Ticket ${index + 1}: `}
+                    {ticket.faction.displayName}
+                  </h2>
+
+                  <p className="text-lg text-dreamstate-periwinkle leading-relaxed max-w-lg mx-auto font-body">
+                    {ticket.faction.description}
+                  </p>
                 </div>
               </div>
-
-              <h2 className="text-3xl md:text-4xl font-title font-bold mb-4 text-dreamstate-ice">
-                You are {orderInfo.faction.displayName}
-              </h2>
-
-              <p className="text-lg text-dreamstate-periwinkle leading-relaxed max-w-lg mx-auto font-body">
-                {orderInfo.faction.description}
-              </p>
-            </div>
+            ))}
           </div>
 
           {/* Ticket Info */}

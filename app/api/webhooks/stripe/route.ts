@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { db } from '@/lib/db';
-import { ticketOrders, ticketTypes, ticketCounter, factions } from '@/lib/db/schema';
+import { ticketOrders, ticketTypes, ticketCounter, factions, tickets } from '@/lib/db/schema';
 import { eq, and, inArray, sql } from 'drizzle-orm';
 import { assignFaction, getFactionIdFromIndex } from '@/lib/types';
 
@@ -114,48 +114,54 @@ async function processCompletedCheckout(session: Stripe.Checkout.Session) {
       }
     }
 
-    // 4. Increment ticket counter atomically and get order sequence number
-    const counterResult = await db
-      .update(ticketCounter)
-      .set({ currentValue: sql`${ticketCounter.currentValue} + 1` })
-      .where(eq(ticketCounter.id, 1))
-      .returning({ newValue: ticketCounter.currentValue });
-
-    if (!counterResult.length) {
-      throw new Error('Failed to increment ticket counter');
-    }
-
-    const orderSequenceNumber = counterResult[0].newValue;
-
-    // 5. Calculate faction assignment
-    const factionIndex = assignFaction(orderSequenceNumber);
-    const assignedFactionId = getFactionIdFromIndex(factionIndex);
-
-    // 6. Verify faction exists
-    const faction = await db
-      .select()
-      .from(factions)
-      .where(eq(factions.id, assignedFactionId))
-      .limit(1);
-
-    if (!faction.length) {
-      throw new Error(`Faction ${assignedFactionId} not found`);
-    }
-
-    // 7. Create the ticket order
-    await db.insert(ticketOrders).values({
+    // 4. Create the ticket order first
+    const orderResult = await db.insert(ticketOrders).values({
       stripeCheckoutSessionId: session.id,
       stripePaymentIntentId: paymentIntentId,
       customerEmail,
       ticketTypeId,
       quantity,
-      orderSequenceNumber,
-      assignedFactionId,
       status: 'PAID',
-    });
+    }).returning({ id: ticketOrders.id });
+
+    if (!orderResult.length) {
+      throw new Error('Failed to create order');
+    }
+
+    const orderId = orderResult[0].id;
+
+    // 5. Create individual tickets with sequential ticket numbers
+    const ticketInserts = [];
+    for (let i = 0; i < quantity; i++) {
+      // Increment ticket counter atomically for each ticket
+      const counterResult = await db
+        .update(ticketCounter)
+        .set({ currentValue: sql`${ticketCounter.currentValue} + 1` })
+        .where(eq(ticketCounter.id, 1))
+        .returning({ newValue: ticketCounter.currentValue });
+
+      if (!counterResult.length) {
+        throw new Error('Failed to increment ticket counter');
+      }
+
+      const ticketNumber = counterResult[0].newValue;
+
+      // Calculate faction assignment based on ticket number
+      const factionIndex = assignFaction(ticketNumber);
+      const assignedFactionId = getFactionIdFromIndex(factionIndex);
+
+      ticketInserts.push({
+        orderId,
+        ticketNumber,
+        assignedFactionId,
+      });
+    }
+
+    // Insert all tickets
+    await db.insert(tickets).values(ticketInserts);
 
     console.log(
-      `✅ Order created: Session ${session.id}, Sequence #${orderSequenceNumber}, Faction: ${faction[0].displayName}`
+      `✅ Order created: Session ${session.id}, ${quantity} ticket(s) with numbers: ${ticketInserts.map(t => t.ticketNumber).join(', ')}`
     );
 
     // TODO: Send confirmation email to customer with faction assignment

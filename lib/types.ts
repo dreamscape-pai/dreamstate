@@ -40,9 +40,13 @@ export interface FactionInfo {
   iconUrl: string | null;
 }
 
-export interface OrderInfoResponse {
+export interface TicketInfo {
+  ticketNumber: number;
   faction: FactionInfo;
-  orderSequenceNumber: number;
+}
+
+export interface OrderInfoResponse {
+  tickets: TicketInfo[];
   quantity: number;
 }
 

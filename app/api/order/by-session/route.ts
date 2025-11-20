@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { ticketOrders, factions } from '@/lib/db/schema';
+import { ticketOrders, factions, tickets } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import type { OrderInfoResponse } from '@/lib/types';
 
@@ -16,14 +16,10 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Fetch order with faction details
+    // Fetch order
     const orderResult = await db
-      .select({
-        order: ticketOrders,
-        faction: factions,
-      })
+      .select()
       .from(ticketOrders)
-      .innerJoin(factions, eq(ticketOrders.assignedFactionId, factions.id))
       .where(eq(ticketOrders.stripeCheckoutSessionId, sessionId))
       .limit(1);
 
@@ -34,7 +30,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const { order, faction } = orderResult[0];
+    const order = orderResult[0];
 
     // Only return order info if payment is complete
     if (order.status !== 'PAID') {
@@ -44,14 +40,27 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Fetch all tickets for this order with their factions
+    const ticketsResult = await db
+      .select({
+        ticket: tickets,
+        faction: factions,
+      })
+      .from(tickets)
+      .innerJoin(factions, eq(tickets.assignedFactionId, factions.id))
+      .where(eq(tickets.orderId, order.id))
+      .orderBy(tickets.ticketNumber);
+
     const response: OrderInfoResponse = {
-      faction: {
-        displayName: faction.displayName,
-        description: faction.description,
-        colorToken: faction.colorToken,
-        iconUrl: faction.iconUrl,
-      },
-      orderSequenceNumber: order.orderSequenceNumber,
+      tickets: ticketsResult.map(({ ticket, faction }) => ({
+        ticketNumber: ticket.ticketNumber,
+        faction: {
+          displayName: faction.displayName,
+          description: faction.description,
+          colorToken: faction.colorToken,
+          iconUrl: faction.iconUrl,
+        },
+      })),
       quantity: order.quantity,
     };
 
