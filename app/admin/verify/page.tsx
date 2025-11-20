@@ -9,8 +9,8 @@ export default function AdminVerifyPage() {
   const [authError, setAuthError] = useState('');
 
   useEffect(() => {
-    // Check if already authenticated in session
-    const saved = sessionStorage.getItem('adminAuth');
+    // Check if already authenticated in localStorage
+    const saved = localStorage.getItem('adminAuth');
     if (saved) {
       setIsAuthenticated(true);
     }
@@ -34,7 +34,7 @@ export default function AdminVerifyPage() {
       }
 
       // Password is valid
-      sessionStorage.setItem('adminAuth', password);
+      localStorage.setItem('adminAuth', password);
       setIsAuthenticated(true);
     } catch (error) {
       setAuthError('Authentication failed');
@@ -42,7 +42,7 @@ export default function AdminVerifyPage() {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('adminAuth');
+    localStorage.removeItem('adminAuth');
     setIsAuthenticated(false);
     setPassword('');
   };

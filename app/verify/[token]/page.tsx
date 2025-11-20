@@ -39,7 +39,7 @@ export default function VerifyTicketPage() {
 
   useEffect(() => {
     // Check if user is admin
-    const adminAuth = sessionStorage.getItem('adminAuth');
+    const adminAuth = localStorage.getItem('adminAuth');
     setIsAdmin(!!adminAuth);
   }, []);
 
@@ -69,7 +69,7 @@ export default function VerifyTicketPage() {
   const handleVerifyTicket = async () => {
     setIsVerifying(true);
     try {
-      const adminPassword = sessionStorage.getItem('adminAuth');
+      const adminPassword = localStorage.getItem('adminAuth');
       const response = await fetch('/api/admin/verify-ticket', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
