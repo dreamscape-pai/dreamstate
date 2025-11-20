@@ -4,8 +4,14 @@ import { db } from '@/lib/db';
 import { ticketOrders, ticketTypes, ticketCounter, factions, tickets } from '@/lib/db/schema';
 import { eq, and, inArray, sql } from 'drizzle-orm';
 import { assignFaction, getFactionIdFromIndex } from '@/lib/types';
-import { randomBytes } from 'crypto';
 import { sendTicketConfirmationEmail } from '@/lib/email/send';
+
+// Generate random token using Web Crypto API (Edge Runtime compatible)
+function generateToken(): string {
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+}
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-02-24.acacia',
@@ -153,7 +159,7 @@ async function processCompletedCheckout(session: Stripe.Checkout.Session) {
       const assignedFactionId = getFactionIdFromIndex(factionIndex);
 
       // Generate unique verification token
-      const verificationToken = randomBytes(32).toString('hex');
+      const verificationToken = generateToken();
 
       ticketInserts.push({
         orderId,
