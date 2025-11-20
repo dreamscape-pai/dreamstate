@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import Header from '@/components/Header';
 
@@ -36,42 +36,33 @@ export default function AdminVerifyPage() {
     }
   }, []);
 
-  useEffect(() => {
-    if (isAuthenticated && !scannerRef.current) {
-      // Initialize QR scanner
-      const scanner = new Html5QrcodeScanner(
-        'qr-reader',
-        {
-          fps: 10,
-          qrbox: { width: 250, height: 250 },
-        },
-        false
-      );
-
-      scanner.render(onScanSuccess, onScanError);
-      scannerRef.current = scanner;
-
-      return () => {
-        scanner.clear();
-      };
-    }
-  }, [isAuthenticated]);
-
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!password) {
-      setAuthError('Please enter password');
-      return;
-    }
-
-    // Store in session
-    sessionStorage.setItem('adminAuth', password);
-    setAdminPassword(password);
-    setIsAuthenticated(true);
     setAuthError('');
+
+    try {
+      // Verify password with backend
+      const response = await fetch('/api/admin/verify-ticket', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: 'test', adminPassword: password }),
+      });
+
+      if (response.status === 401) {
+        setAuthError('Invalid password');
+        return;
+      }
+
+      // Password is valid
+      sessionStorage.setItem('adminAuth', password);
+      setAdminPassword(password);
+      setIsAuthenticated(true);
+    } catch (error) {
+      setAuthError('Authentication failed');
+    }
   };
 
-  const onScanSuccess = async (decodedText: string) => {
+  const onScanSuccess = useCallback(async (decodedText: string) => {
     if (isProcessing) return;
 
     setIsProcessing(true);
@@ -118,7 +109,7 @@ export default function AdminVerifyPage() {
     } finally {
       setIsProcessing(false);
     }
-  };
+  }, [isProcessing, adminPassword]);
 
   const onScanError = (errorMessage: string) => {
     // Ignore scan errors (happens constantly during scanning)

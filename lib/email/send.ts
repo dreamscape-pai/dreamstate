@@ -28,7 +28,7 @@ export async function sendTicketConfirmationEmail(data: TicketEmailData) {
         {
           filename: 'qrcode.png',
           content: qrCodeBuffer,
-          cid: 'qrcode', // Content ID for embedding
+          contentId: 'qrcode', // Content ID for embedding
         },
       ],
     });
