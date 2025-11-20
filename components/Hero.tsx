@@ -26,15 +26,38 @@ export default function Hero() {
         </div>
 
         <div className="space-y-6 font-body">
-          <p className="text-lg md:text-xl text-dreamstate-ice leading-relaxed max-w-2xl mx-auto">
-            Step into a world where reality bends and the impossible becomes tangible.
-            Dreamstate invites you to experience an unforgettable fusion of circus artistry
-            and subconscious exploration.
-          </p>
+          <div className="text-base md:text-lg text-dreamstate-ice leading-relaxed max-w-3xl mx-auto space-y-4">
+            <p>
+              Step into a world where reality bends and the impossible becomes tangible. Dreamstate invites you to experience an unforgettable fusion of circus artistry and subconscious exploration.
+            </p>
 
-          <p className="text-base md:text-lg text-dreamstate-periwinkle">
-            [Placeholder event description and details will go here]
-          </p>
+            <p>
+              As the event unfolds, you&apos;ll be drawn into our Faction System—four unique realms of the dreamworld that every guest will be placed into upon arrival:
+            </p>
+
+            <ul className="list-none space-y-1 text-dreamstate-periwinkle">
+              <li>• Déjà Vu</li>
+              <li>• Lucid</li>
+              <li>• Hypnotic</li>
+              <li>• Drift</li>
+            </ul>
+
+            <p>
+              Your faction becomes your identity within the Dreamstate, shaping how you move through the story, challenges, and surprises. Expect immersive, live circus theatre all around you: characters who blur the line between performer and dream-guide, cryptic encounters, and playful trials designed to unlock your intuition, creativity, and curiosity. <a href="#factions" className="text-dreamstate-lavender hover:underline">Read more about the factions below!</a>
+            </p>
+
+            <p>
+              Join faction-led interactive games throughout the night to earn points, discover hidden clues, and compete for prizes! Nothing is quite what it seems—but everything is connected.
+            </p>
+
+            <p>
+              And as the narrative reaches its peak, we shift into celebration. Step into Dreamscape&apos;s massive amphitheatre into the glow of the Fire Jam, where flame, music, and motion converge in an electric gathering of flow artists. Then drift deeper into the dream with our late-night Dome Party, featuring immersive projections, hypnotic soundscapes, and DJs guiding you into the liminal hours.
+            </p>
+
+            <p className="italic text-dreamstate-periwinkle">
+              Enter with an open mind, leave with a story that feels like it followed you from sleep.
+            </p>
+          </div>
 
           <button
             onClick={scrollToTickets}

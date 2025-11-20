@@ -33,7 +33,7 @@ const factions = [
 
 export default function FactionGrid() {
   return (
-    <section className="relative py-16 px-4 overflow-hidden">
+    <section id="factions" className="relative py-16 px-4 overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 opacity-50">
@@ -101,19 +101,31 @@ export default function FactionGrid() {
               <ul className="space-y-2 text-dreamstate-ice">
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
-                  <span>Full access to all performance areas</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="mr-2">•</span>
                   <span>Faction-specific experiences and activities</span>
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
-                  <span>Welcome gift and faction merchandise</span>
+                  <span>Access to the fire jam</span>
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
-                  <span>Access to food and beverage areas</span>
+                  <span>Unlimited paraffin during fire jam hours</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Entry to the late-night dome afterparty</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Interactive games with prizes</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Character encounters and storyline moments</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Community flow and prop play spaces</span>
                 </li>
               </ul>
             </div>
@@ -125,15 +137,23 @@ export default function FactionGrid() {
               <ul className="space-y-2 text-dreamstate-ice">
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
-                  <span>Event date, time, and location details</span>
+                  <span>Event Date: Saturday, December 27, 2025</span>
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
-                  <span>Age restrictions and requirements</span>
+                  <span>Event Location: Dreamscape Pai, <a href="https://instagram.com/dreamscape.pai" target="_blank" rel="noopener noreferrer" className="text-dreamstate-lavender hover:underline">@dreamscape.pai</a></span>
                 </li>
                 <li className="flex items-start">
                   <span className="mr-2">•</span>
-                  <span>Refund and transfer policy</span>
+                  <span>No outside food or drinks allowed except for water. Free water refills onsite - please bring a reusable bottle. Food available for purchase from vendors and Dreams</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Ages 18 and up only</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>No pets allowed</span>
                 </li>
               </ul>
             </div>

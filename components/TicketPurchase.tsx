@@ -12,6 +12,7 @@ const getTicketImage = (ticketName: string): string => {
   if (name.includes('pathmaker') || name.includes('tier 2')) return '/images/pieces/bishop.png';
   if (name.includes('castle') || name.includes('tier 3')) return '/images/pieces/rook.png';
   if (name.includes('dreamweaver') || name.includes('donor')) return '/images/pieces/queen.png';
+  if (name.includes('southeast asian')) return '/images/pieces/southeast-asia.png';
   return '/images/pieces/knight.png'; // default
 };
 
@@ -230,6 +231,31 @@ export default function TicketPurchase() {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Fine Print */}
+          <div className="mt-8 bg-dreamstate-slate/20 p-6 rounded-lg border border-dreamstate-purple/30 backdrop-blur-sm">
+            <h3 className="text-lg font-semibold mb-4 text-dreamstate-lavender font-subheading uppercase tracking-wide">
+              Important Information
+            </h3>
+            <ul className="space-y-3 text-sm text-dreamstate-ice font-body">
+              <li className="flex items-start">
+                <span className="mr-2">•</span>
+                <span>Tickets are for ages 18 and up only. Do not purchase a ticket for anyone under 18.</span>
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>
+                <span>Tickets are non-refundable. To inquire about transferring your ticket, please email <a href="mailto:dreamscape.pai@gmail.com" className="text-dreamstate-lavender hover:underline">dreamscape.pai@gmail.com</a>.</span>
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>
+                <span>Dreamstate is an interactive, movement-based experience that involves navigating the Dreamscape venue. If you have any accessibility needs or mobility restrictions, please contact us by email prior to purchasing.</span>
+              </li>
+              <li className="flex items-start">
+                <span className="mr-2">•</span>
+                <span>By attending Dreamstate, you acknowledge that photo and video may be captured for event documentation and promotional purposes for Dreamscape.</span>
+              </li>
+            </ul>
           </div>
         </div>
         )}
