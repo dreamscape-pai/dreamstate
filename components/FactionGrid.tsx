@@ -63,7 +63,7 @@ export default function FactionGrid() {
           a different aspect of the dream experience. Your faction will be revealed after purchase.
         </p>
 
-        <div className="mb-16 max-w-[900px] mx-auto backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40" style={{ backgroundColor: 'rgba(24,33,55,0.6)' }}>
+        <div className="mb-16 max-w-[900px] mx-auto backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40 bg-dreamstate-slate/60">
           <div className="grid grid-cols-1 min-[360px]:grid-cols-2 md:grid-cols-4 gap-8">
             {factions.map((faction) => (
               <div
@@ -88,7 +88,7 @@ export default function FactionGrid() {
         </div>
 
         {/* Event Description */}
-        <div className="max-w-3xl mx-auto mt-16 mb-16 backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40" style={{ backgroundColor: 'rgba(24,33,55,0.6)' }}>
+        <div className="max-w-3xl mx-auto mt-16 mb-16 backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40 bg-dreamstate-slate/60">
           <div className="text-base md:text-lg text-dreamstate-ice leading-relaxed font-body space-y-4">
             <p>
               Your faction becomes your identity within the Dreamstate, shaping how you move through the story, challenges, and surprises.
@@ -122,7 +122,7 @@ export default function FactionGrid() {
             Ticket Information
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left bg-dreamstate-slate/30 p-8 rounded-lg border border-dreamstate-purple/30 font-body backdrop-blur-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left bg-dreamstate-slate/60 p-8 rounded-lg border border-dreamstate-purple/30 font-body backdrop-blur-sm">
             <div>
               <h3 className="text-xl font-semibold mb-3 text-dreamstate-lavender font-subheading uppercase tracking-wide">
                 What&apos;s Included
