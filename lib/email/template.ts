@@ -63,6 +63,11 @@ export async function generateTicketConfirmationEmail(
                 <p style="margin: 15px 0 0 0; color: #9ca3af; font-size: 14px;">
                   Ticket #${data.ticketNumber}
                 </p>
+                <p style="margin: 10px 0 0 0; font-size: 14px;">
+                  <a href="${data.siteUrl}/verify/${data.verificationToken}" style="color: #8b5cf6; text-decoration: none;">
+                    Having trouble viewing your QR? Click here
+                  </a>
+                </p>
               </div>
 
               <!-- Important Information -->
