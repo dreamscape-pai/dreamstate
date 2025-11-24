@@ -29,6 +29,13 @@
       "when": 1763630298280,
       "tag": "0003_melted_gargoyle",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1763642927534,
+      "tag": "0004_nice_goliath",
+      "breakpoints": true
     }
   ]
 }

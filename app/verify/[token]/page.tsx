@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Image from 'next/image';
+import QRCode from 'qrcode';
 
 interface TicketInfo {
   ticketNumber: number;
@@ -39,12 +40,30 @@ export default function VerifyTicketPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string | null>(null);
 
   useEffect(() => {
     // Check if user is admin
     const adminAuth = localStorage.getItem('adminAuth');
     setIsAdmin(!!adminAuth);
   }, []);
+
+  useEffect(() => {
+    // Generate QR code for non-admin users
+    if (!isAdmin && token) {
+      const url = `${window.location.origin}/verify/${token}`;
+      QRCode.toDataURL(url, {
+        width: 300,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF',
+        },
+      })
+        .then(setQrCodeDataUrl)
+        .catch(err => console.error('Failed to generate QR code:', err));
+    }
+  }, [isAdmin, token]);
 
   useEffect(() => {
     async function fetchTicketInfo() {
@@ -158,6 +177,23 @@ export default function VerifyTicketPage() {
               </p>
             )}
           </div>
+
+          {/* QR Code for Non-Admin Users */}
+          {!isAdmin && qrCodeDataUrl && (
+            <div className="mb-6 bg-dreamstate-slate/30 p-6 rounded-lg border border-dreamstate-purple/30 backdrop-blur-sm">
+              <h3 className="text-xl font-semibold mb-4 text-dreamstate-lavender font-subheading uppercase tracking-wide text-center">
+                Your Ticket QR Code
+              </h3>
+              <div className="text-center">
+                <div className="inline-block bg-white p-4 rounded-lg">
+                  <img src={qrCodeDataUrl} alt="Ticket QR Code" className="w-64 h-64" />
+                </div>
+                <p className="text-sm text-dreamstate-periwinkle mt-4">
+                  Show this QR code at the door for verification
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Ticket Status / Admin Actions */}
           {ticketInfo.isVerified && (
