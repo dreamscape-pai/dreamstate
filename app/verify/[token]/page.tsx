@@ -178,23 +178,6 @@ export default function VerifyTicketPage() {
             )}
           </div>
 
-          {/* QR Code for Non-Admin Users */}
-          {!isAdmin && qrCodeDataUrl && (
-            <div className="mb-6 bg-dreamstate-slate/30 p-6 rounded-lg border border-dreamstate-purple/30 backdrop-blur-sm">
-              <h3 className="text-xl font-semibold mb-4 text-dreamstate-lavender font-subheading uppercase tracking-wide text-center">
-                Your Ticket QR Code
-              </h3>
-              <div className="text-center">
-                <div className="inline-block bg-white p-4 rounded-lg">
-                  <img src={qrCodeDataUrl} alt="Ticket QR Code" className="w-64 h-64" />
-                </div>
-                <p className="text-sm text-dreamstate-periwinkle mt-4">
-                  Show this QR code at the door for verification
-                </p>
-              </div>
-            </div>
-          )}
-
           {/* Ticket Status / Admin Actions */}
           {ticketInfo.isVerified && (
             <div className="mb-6 bg-yellow-900/30 border border-yellow-500 rounded-lg p-6 text-center">
@@ -284,6 +267,23 @@ export default function VerifyTicketPage() {
               </li>
             </ul>
           </div>
+
+          {/* QR Code for Non-Admin Users */}
+          {!isAdmin && qrCodeDataUrl && (
+            <div className="mt-6 bg-dreamstate-slate/30 p-6 rounded-lg border border-dreamstate-purple/30 backdrop-blur-sm">
+              <h3 className="text-xl font-semibold mb-4 text-dreamstate-lavender font-subheading uppercase tracking-wide text-center">
+                Your Ticket QR Code
+              </h3>
+              <div className="text-center">
+                <div className="inline-block bg-white p-4 rounded-lg">
+                  <img src={qrCodeDataUrl} alt="Ticket QR Code" className="w-64 h-64" />
+                </div>
+                <p className="text-sm text-dreamstate-periwinkle mt-4">
+                  Show this QR code at the door for verification
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
