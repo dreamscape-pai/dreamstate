@@ -221,6 +221,11 @@ export default function TicketPurchase() {
                         <p className="text-sm text-gray-400 mt-1">
                           {ticket.description}
                         </p>
+                        {ticket.name.toLowerCase().includes('southeast asian') && (
+                          <p className="text-sm text-yellow-400 mt-2 font-semibold">
+                            Passport or Thai ID card required
+                          </p>
+                        )}
                       </div>
                       <div className="text-right ml-4">
                         <p className="text-xl font-bold text-dreamstate-lavender">
