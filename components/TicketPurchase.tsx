@@ -218,14 +218,14 @@ export default function TicketPurchase() {
                     <div className="flex-1 flex justify-between items-start">
                       <div>
                         <h3 className="text-lg font-semibold">{ticket.name}</h3>
-                        <p className="text-sm text-gray-400 mt-1">
-                          {ticket.description}
-                        </p>
                         {ticket.name.toLowerCase().includes('southeast asian') && (
-                          <p className="text-sm text-yellow-400 mt-2 font-semibold">
+                          <p className="text-sm text-yellow-400 mt-1 font-semibold">
                             Passport or Thai ID card required
                           </p>
                         )}
+                        <p className="text-sm text-gray-400 mt-1">
+                          {ticket.description}
+                        </p>
                       </div>
                       <div className="text-right ml-4">
                         <p className="text-xl font-bold text-dreamstate-lavender">
