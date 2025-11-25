@@ -230,7 +230,7 @@ export default function TicketPurchase() {
                     </div>
                   </div>
                   <div className="text-sm text-gray-400">
-                    {ticket.remaining !== null ? (
+                    {ticket.remaining !== null && (
                       ticket.remaining > 0 ? (
                         <span className={ticket.remaining < 20 ? 'text-orange-400' : ''}>
                           {ticket.remaining} tickets remaining
@@ -238,8 +238,6 @@ export default function TicketPurchase() {
                       ) : (
                         <span className="text-red-400">Sold out</span>
                       )
-                    ) : (
-                      <span className="text-green-400">Available</span>
                     )}
                   </div>
                 </div>
