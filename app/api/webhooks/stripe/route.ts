@@ -64,6 +64,7 @@ async function processCompletedCheckout(session: Stripe.Checkout.Session) {
   const ticketTypeId = parseInt(session.metadata?.ticketTypeId || '0');
   const quantity = parseInt(session.metadata?.quantity || '0');
   const customerEmail = session.customer_details?.email || session.customer_email || '';
+  const customerName = session.customer_details?.name || null;
   const paymentIntentId = session.payment_intent as string;
 
   if (!ticketTypeId || !quantity || !customerEmail) {
@@ -126,6 +127,7 @@ async function processCompletedCheckout(session: Stripe.Checkout.Session) {
     const orderResult = await db.insert(ticketOrders).values({
       stripeCheckoutSessionId: session.id,
       stripePaymentIntentId: paymentIntentId,
+      customerName,
       customerEmail,
       ticketTypeId,
       quantity,

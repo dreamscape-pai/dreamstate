@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Header from '@/components/Header';
 
 interface TicketData {
   ticketNumber: number;
   verificationToken: string;
+  customerName: string | null;
   customerEmail: string;
   purchaseMethod: string;
   ticketTypeName: string;
@@ -14,6 +16,7 @@ interface TicketData {
   createdAt: string;
   isVerified: boolean;
   verifiedAt: string | null;
+  stripePaymentIntentId: string | null;
 }
 
 export default function AdminDashboard() {
@@ -167,23 +170,32 @@ export default function AdminDashboard() {
                   <thead className="bg-dreamstate-midnight">
                     <tr>
                       <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Ticket #</th>
+                      <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Name</th>
                       <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Email</th>
                       <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Method</th>
                       <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Type</th>
                       <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Faction</th>
                       <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Created</th>
                       <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Status</th>
+                      <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Stripe</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-dreamstate-slate/30">
                     {tickets.map((ticket) => (
                       <tr
                         key={ticket.ticketNumber}
-                        onClick={() => window.location.href = `/verify/${ticket.verificationToken}`}
-                        className="hover:bg-dreamstate-slate/20 cursor-pointer transition-colors"
+                        className="hover:bg-dreamstate-slate/20 transition-colors"
                       >
                         <td className="px-4 py-3 text-dreamstate-ice font-mono">
-                          #{ticket.ticketNumber}
+                          <Link
+                            href={`/verify/${ticket.verificationToken}`}
+                            className="hover:text-dreamstate-lavender cursor-pointer"
+                          >
+                            #{ticket.ticketNumber}
+                          </Link>
+                        </td>
+                        <td className="px-4 py-3 text-dreamstate-ice">
+                          {ticket.customerName || '-'}
                         </td>
                         <td className="px-4 py-3 text-dreamstate-ice">
                           {ticket.customerEmail}
@@ -220,6 +232,21 @@ export default function AdminDashboard() {
                             <span className="px-2 py-1 bg-gray-700/30 text-gray-300 rounded text-xs font-semibold">
                               Unused
                             </span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3">
+                          {ticket.stripePaymentIntentId ? (
+                            <a
+                              href={`https://dashboard.stripe.com/payments/${ticket.stripePaymentIntentId}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-400 hover:text-blue-300 text-xs underline"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              View
+                            </a>
+                          ) : (
+                            <span className="text-dreamstate-slate text-xs">-</span>
                           )}
                         </td>
                       </tr>

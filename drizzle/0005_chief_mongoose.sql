@@ -1,0 +1,1 @@
+ALTER TABLE "ticket_orders" ADD COLUMN "customer_name" varchar(255);

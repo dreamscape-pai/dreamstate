@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { tickets, factions } from '@/lib/db/schema';
+import { tickets, factions, ticketOrders } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 
 export async function GET(
@@ -25,6 +25,7 @@ export async function GET(
         isVerified: tickets.isVerified,
         verifiedAt: tickets.verifiedAt,
         purchaseMethod: tickets.purchaseMethod,
+        orderId: tickets.orderId,
       })
       .from(tickets)
       .where(eq(tickets.verificationToken, token))
@@ -51,11 +52,23 @@ export async function GET(
       );
     }
 
+    // Get order info
+    const order = await db
+      .select({
+        customerName: ticketOrders.customerName,
+        customerEmail: ticketOrders.customerEmail,
+      })
+      .from(ticketOrders)
+      .where(eq(ticketOrders.id, ticket[0].orderId))
+      .limit(1);
+
     return NextResponse.json({
       ticketNumber: Number(ticket[0].ticketNumber),
       isVerified: ticket[0].isVerified,
       verifiedAt: ticket[0].verifiedAt,
       purchaseMethod: ticket[0].purchaseMethod,
+      customerName: order[0]?.customerName || null,
+      customerEmail: order[0]?.customerEmail || null,
       faction: {
         displayName: faction[0].displayName,
         description: faction[0].description,

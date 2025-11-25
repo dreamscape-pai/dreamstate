@@ -51,6 +51,7 @@ export async function POST(request: NextRequest) {
     const orderResult = await db.insert(ticketOrders).values({
       stripeCheckoutSessionId: `in-person-${uniqueId}`,
       stripePaymentIntentId: null,
+      customerName: name,
       customerEmail: normalizedEmail,
       ticketTypeId: inPersonTicketTypeId,
       quantity: 1,

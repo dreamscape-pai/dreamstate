@@ -37,8 +37,10 @@ export async function GET(request: NextRequest) {
       allTickets.map(async (ticket) => {
         const order = await db
           .select({
+            customerName: ticketOrders.customerName,
             customerEmail: ticketOrders.customerEmail,
             ticketTypeId: ticketOrders.ticketTypeId,
+            stripePaymentIntentId: ticketOrders.stripePaymentIntentId,
           })
           .from(ticketOrders)
           .where(eq(ticketOrders.id, ticket.orderId))
@@ -55,6 +57,7 @@ export async function GET(request: NextRequest) {
         return {
           ticketNumber: ticket.ticketNumber,
           verificationToken: ticket.verificationToken,
+          customerName: order[0]?.customerName || null,
           customerEmail: order[0]?.customerEmail || 'Unknown',
           purchaseMethod: ticket.purchaseMethod,
           ticketTypeName: ticketType?.[0]?.name || 'Unknown',
@@ -62,6 +65,7 @@ export async function GET(request: NextRequest) {
           createdAt: ticket.createdAt.toISOString(),
           isVerified: ticket.isVerified,
           verifiedAt: ticket.verifiedAt?.toISOString() || null,
+          stripePaymentIntentId: order[0]?.stripePaymentIntentId || null,
         };
       })
     );

@@ -101,6 +101,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       ticketNumber: Number(ticketData.ticketNumber),
+      customerName: order[0]?.customerName,
       customerEmail: order[0]?.customerEmail,
       faction: {
         displayName: faction[0].displayName,

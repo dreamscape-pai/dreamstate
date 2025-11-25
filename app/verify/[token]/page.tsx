@@ -11,6 +11,8 @@ interface TicketInfo {
   isVerified: boolean;
   verifiedAt: string | null;
   purchaseMethod: string;
+  customerName: string | null;
+  customerEmail: string | null;
   faction: {
     displayName: string;
     description: string;
@@ -22,6 +24,7 @@ interface VerificationResult {
   success?: boolean;
   alreadyVerified?: boolean;
   ticketNumber: number;
+  customerName?: string;
   customerEmail?: string;
   faction: {
     displayName: string;
@@ -49,8 +52,8 @@ export default function VerifyTicketPage() {
   }, []);
 
   useEffect(() => {
-    // Generate QR code for non-admin users
-    if (!isAdmin && token) {
+    // Generate QR code for all users
+    if (token) {
       const url = `${window.location.origin}/verify/${token}`;
       QRCode.toDataURL(url, {
         width: 300,
@@ -63,7 +66,7 @@ export default function VerifyTicketPage() {
         .then(setQrCodeDataUrl)
         .catch(err => console.error('Failed to generate QR code:', err));
     }
-  }, [isAdmin, token]);
+  }, [token]);
 
   useEffect(() => {
     async function fetchTicketInfo() {
@@ -165,6 +168,16 @@ export default function VerifyTicketPage() {
               Your Dreamstate Ticket
             </h1>
             <p className="text-dreamstate-periwinkle">Ticket #{ticketInfo.ticketNumber}</p>
+            {ticketInfo.customerName && (
+              <p className="text-dreamstate-lavender mt-1 font-semibold">
+                {ticketInfo.customerName}
+              </p>
+            )}
+            {ticketInfo.customerEmail && (
+              <p className="text-dreamstate-periwinkle text-sm mt-1">
+                {ticketInfo.customerEmail}
+              </p>
+            )}
             {ticketInfo.purchaseMethod === 'in_person' && (
               <div className="mt-2 text-yellow-400 font-semibold">
                 <p>Bought in person</p>
@@ -214,6 +227,11 @@ export default function VerifyTicketPage() {
                 <p className="text-xl text-green-100">
                   <strong>Ticket #{verificationResult.ticketNumber}</strong>
                 </p>
+                {verificationResult.customerName && (
+                  <p className="text-green-200 font-semibold">
+                    {verificationResult.customerName}
+                  </p>
+                )}
                 {verificationResult.customerEmail && (
                   <p className="text-green-200">
                     {verificationResult.customerEmail}
@@ -268,8 +286,8 @@ export default function VerifyTicketPage() {
             </ul>
           </div>
 
-          {/* QR Code for Non-Admin Users */}
-          {!isAdmin && qrCodeDataUrl && (
+          {/* QR Code */}
+          {qrCodeDataUrl && (
             <div className="mt-6 bg-dreamstate-slate/30 p-6 rounded-lg border border-dreamstate-purple/30 backdrop-blur-sm">
               <h3 className="text-xl font-semibold mb-4 text-dreamstate-lavender font-subheading uppercase tracking-wide text-center">
                 Your Ticket QR Code

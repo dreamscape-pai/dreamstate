@@ -35,6 +35,7 @@ export const ticketOrders = pgTable('ticket_orders', {
   id: serial('id').primaryKey(),
   stripeCheckoutSessionId: varchar('stripe_checkout_session_id', { length: 255 }).notNull().unique(),
   stripePaymentIntentId: varchar('stripe_payment_intent_id', { length: 255 }).unique(),
+  customerName: varchar('customer_name', { length: 255 }),
   customerEmail: varchar('customer_email', { length: 255 }).notNull(),
   ticketTypeId: integer('ticket_type_id')
     .notNull()
