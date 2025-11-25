@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 
 interface TicketData {
   ticketNumber: number;
+  verificationToken: string;
   customerEmail: string;
   purchaseMethod: string;
   ticketTypeName: string;
@@ -176,7 +177,11 @@ export default function AdminDashboard() {
                   </thead>
                   <tbody className="divide-y divide-dreamstate-slate/30">
                     {tickets.map((ticket) => (
-                      <tr key={ticket.ticketNumber} className="hover:bg-dreamstate-slate/20">
+                      <tr
+                        key={ticket.ticketNumber}
+                        onClick={() => window.location.href = `/verify/${ticket.verificationToken}`}
+                        className="hover:bg-dreamstate-slate/20 cursor-pointer transition-colors"
+                      >
                         <td className="px-4 py-3 text-dreamstate-ice font-mono">
                           #{ticket.ticketNumber}
                         </td>

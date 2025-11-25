@@ -22,6 +22,7 @@ export async function GET(request: NextRequest) {
         ticketNumber: tickets.ticketNumber,
         orderId: tickets.orderId,
         purchaseMethod: tickets.purchaseMethod,
+        verificationToken: tickets.verificationToken,
         factionName: factions.displayName,
         createdAt: tickets.createdAt,
         isVerified: tickets.isVerified,
@@ -53,6 +54,7 @@ export async function GET(request: NextRequest) {
 
         return {
           ticketNumber: ticket.ticketNumber,
+          verificationToken: ticket.verificationToken,
           customerEmail: order[0]?.customerEmail || 'Unknown',
           purchaseMethod: ticket.purchaseMethod,
           ticketTypeName: ticketType?.[0]?.name || 'Unknown',
