@@ -32,21 +32,16 @@ export default function TicketPurchase() {
       const data = await response.json();
       setTicketTypes(data.ticketTypes);
 
-      // Auto-select First Mover (ID 5) if none selected
+      // Auto-select lowest priced available ticket (excluding SEA)
       if (!selectedTicketType && data.ticketTypes.length > 0) {
-        const firstMover = data.ticketTypes.find(
-          (t: TicketAvailability) => t.id === 5 && (t.remaining === null || t.remaining > 0)
+        const availableTickets = data.ticketTypes.filter(
+          (t: TicketAvailability) =>
+            (t.remaining === null || t.remaining > 0) &&
+            !t.name.toLowerCase().includes('southeast asian')
         );
-        if (firstMover) {
-          setSelectedTicketType(firstMover.id);
-        } else {
-          // Fallback to first available if First Mover is sold out
-          const firstAvailable = data.ticketTypes.find(
-            (t: TicketAvailability) => t.remaining === null || t.remaining > 0
-          );
-          if (firstAvailable) {
-            setSelectedTicketType(firstAvailable.id);
-          }
+        if (availableTickets.length > 0) {
+          // Tickets are already sorted by price, so first non-SEA is lowest price
+          setSelectedTicketType(availableTickets[0].id);
         }
       }
     } catch (err) {
