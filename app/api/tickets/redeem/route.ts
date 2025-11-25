@@ -107,13 +107,15 @@ export async function POST(request: NextRequest) {
     try {
       await sendTicketConfirmationEmail({
         customerEmail: normalizedEmail,
-        ticketNumber,
-        verificationToken,
-        faction: {
-          displayName: faction[0].displayName,
-          description: faction[0].description,
-          colorToken: faction[0].colorToken,
-        },
+        tickets: [{
+          ticketNumber,
+          verificationToken,
+          faction: {
+            displayName: faction[0].displayName,
+            description: faction[0].description,
+            colorToken: faction[0].colorToken,
+          },
+        }],
         siteUrl: process.env.SITE_BASE_URL || 'https://dreamstate.dream.sc',
       });
     } catch (emailError) {

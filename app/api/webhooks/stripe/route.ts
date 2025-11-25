@@ -176,21 +176,24 @@ async function processCompletedCheckout(session: Stripe.Checkout.Session) {
       `✅ Order created: Session ${session.id}, ${quantity} ticket(s) with numbers: ${ticketInserts.map(t => t.ticketNumber).join(', ')}`
     );
 
-    // Send confirmation email for each ticket
-    for (const ticket of createdTickets) {
-      // Get faction details
-      const factionDetails = await db
-        .select()
-        .from(factions)
-        .where(eq(factions.id, ticket.assignedFactionId))
-        .limit(1);
+    // Send one confirmation email with all tickets
+    try {
+      // Get faction details for all tickets
+      const ticketsWithFactions = await Promise.all(
+        createdTickets.map(async (ticket) => {
+          const factionDetails = await db
+            .select()
+            .from(factions)
+            .where(eq(factions.id, ticket.assignedFactionId))
+            .limit(1);
 
-      if (factionDetails.length > 0) {
-        const faction = factionDetails[0];
+          if (factionDetails.length === 0) {
+            throw new Error(`Faction not found for ticket #${ticket.ticketNumber}`);
+          }
 
-        try {
-          await sendTicketConfirmationEmail({
-            customerEmail,
+          const faction = factionDetails[0];
+
+          return {
             ticketNumber: Number(ticket.ticketNumber),
             verificationToken: ticket.verificationToken,
             faction: {
@@ -198,13 +201,18 @@ async function processCompletedCheckout(session: Stripe.Checkout.Session) {
               description: faction.description,
               colorToken: faction.colorToken,
             },
-            siteUrl: process.env.SITE_BASE_URL || 'https://dreamstate.dream.sc',
-          });
-        } catch (emailError) {
-          console.error(`Failed to send email for ticket #${ticket.ticketNumber}:`, emailError);
-          // Don't fail the webhook if email fails
-        }
-      }
+          };
+        })
+      );
+
+      await sendTicketConfirmationEmail({
+        customerEmail,
+        tickets: ticketsWithFactions,
+        siteUrl: process.env.SITE_BASE_URL || 'https://dreamstate.dream.sc',
+      });
+    } catch (emailError) {
+      console.error(`Failed to send email for order:`, emailError);
+      // Don't fail the webhook if email fails
     }
   } catch (error) {
     console.error('Error in processCompletedCheckout:', error);
