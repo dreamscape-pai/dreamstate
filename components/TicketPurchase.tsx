@@ -32,13 +32,21 @@ export default function TicketPurchase() {
       const data = await response.json();
       setTicketTypes(data.ticketTypes);
 
-      // Auto-select first available ticket type if none selected
+      // Auto-select First Mover (ID 5) if none selected
       if (!selectedTicketType && data.ticketTypes.length > 0) {
-        const firstAvailable = data.ticketTypes.find(
-          (t: TicketAvailability) => t.remaining === null || t.remaining > 0
+        const firstMover = data.ticketTypes.find(
+          (t: TicketAvailability) => t.id === 5 && (t.remaining === null || t.remaining > 0)
         );
-        if (firstAvailable) {
-          setSelectedTicketType(firstAvailable.id);
+        if (firstMover) {
+          setSelectedTicketType(firstMover.id);
+        } else {
+          // Fallback to first available if First Mover is sold out
+          const firstAvailable = data.ticketTypes.find(
+            (t: TicketAvailability) => t.remaining === null || t.remaining > 0
+          );
+          if (firstAvailable) {
+            setSelectedTicketType(firstAvailable.id);
+          }
         }
       }
     } catch (err) {

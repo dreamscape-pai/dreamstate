@@ -45,8 +45,13 @@ export async function GET() {
       })
     );
 
+    // Sort by price (lowest to highest)
+    const sortedAvailability = availability.sort((a, b) =>
+      a.basePriceMinor - b.basePriceMinor
+    );
+
     const response: TicketAvailabilityResponse = {
-      ticketTypes: availability,
+      ticketTypes: sortedAvailability,
     };
 
     return NextResponse.json(response);
