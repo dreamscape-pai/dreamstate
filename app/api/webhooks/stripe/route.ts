@@ -211,6 +211,3 @@ async function processCompletedCheckout(session: Stripe.Checkout.Session) {
     throw error;
   }
 }
-
-// Disable body parsing for webhooks
-export const runtime = 'edge';
