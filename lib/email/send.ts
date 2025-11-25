@@ -31,11 +31,12 @@ export async function sendTicketConfirmationEmail(data: TicketEmailData) {
           contentId: 'qrcode', // Content ID for embedding
         },
       ],
+      // @ts-ignore - analytics property exists but types aren't updated yet
       analytics: {
         clicks: false,
         opens: false,
       },
-    });
+    } as any);
 
     console.log(`✅ Confirmation email sent to ${data.customerEmail}`, result);
     return result;
