@@ -215,7 +215,7 @@ export default function TicketPurchase() {
                         <h3 className="text-lg font-semibold">{ticket.name}</h3>
                         {ticket.name.toLowerCase().includes('southeast asian') && (
                           <p className="text-sm text-yellow-400 mt-1 font-semibold">
-                            Passport or Thai ID card required
+                            SEA: Passport or Thai ID card required
                           </p>
                         )}
                         <p className="text-sm text-gray-400 mt-1">
