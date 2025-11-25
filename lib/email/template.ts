@@ -99,7 +99,7 @@ export async function generateTicketConfirmationEmail(
           <tr>
             <td style="background-color: #0f1419; padding: 30px; text-align: center;">
               <p style="margin: 0; color: #6b7280; font-size: 14px;">
-                Questions? Contact us at <a href="mailto:support@dreamstate.dream.sc" style="color: #8b5cf6; text-decoration: none;">support@dreamstate.dream.sc</a>
+                Questions? Contact us at <a href="mailto:dreamscape.pai@gmail.com" style="color: #8b5cf6; text-decoration: none;">dreamscape.pai@gmail.com</a>
               </p>
               <p style="margin: 10px 0 0 0; color: #6b7280; font-size: 12px;">
                 © ${new Date().getFullYear()} Dreamstate. All rights reserved.
