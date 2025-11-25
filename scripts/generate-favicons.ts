@@ -24,10 +24,10 @@ async function generateCircularIcon(inputPath: string, size: number): Promise<Bu
 }
 
 async function generateFavicons() {
-  const inputPath = join(process.cwd(), 'public/images/factions/hypnotic.png');
+  const inputPath = join(process.cwd(), 'public/images/factions/deja vu.png');
   const appDir = join(process.cwd(), 'app');
 
-  console.log('📸 Generating circular favicons from hypnotic.png...\n');
+  console.log('📸 Generating circular favicons from deja vu.png...\n');
 
   try {
     // Generate favicon.ico (32x32 circular)
