@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/Header';
-import FactionGrid from '@/components/FactionGrid';
 import type { OrderInfoResponse } from '@/lib/types';
 
 function ThankYouContent() {
@@ -152,9 +151,59 @@ function ThankYouContent() {
         </div>
       </div>
 
-      {/* All Factions Section */}
-      <div className="pb-16">
-        <FactionGrid />
+      {/* All Factions Overview */}
+      <div className="pb-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-center text-dreamstate-periwinkle mb-8 max-w-2xl mx-auto font-body">
+            Every ticket holder is assigned to one of four factions. Each faction represents
+            a different aspect of the dream experience. Your faction will be revealed after purchase.
+          </p>
+
+          <div className="max-w-[900px] mx-auto backdrop-blur-md p-8 rounded-lg border border-dreamstate-lavender/40 bg-dreamstate-slate/60">
+            <div className="grid grid-cols-1 min-[360px]:grid-cols-2 md:grid-cols-4 gap-8">
+              {[
+                {
+                  name: 'Déjà Vu',
+                  description: 'Experience the familiar strangeness of moments already lived.',
+                  image: '/images/factions/deja vu.png',
+                },
+                {
+                  name: 'Lucid',
+                  description: 'Masters of conscious dreaming, walking between sleep and wakefulness.',
+                  image: '/images/factions/lucid.png',
+                },
+                {
+                  name: 'Hypnotic',
+                  description: 'Surrender to the trance and flow with the rhythm of the unconscious.',
+                  image: '/images/factions/hypnotic.png',
+                },
+                {
+                  name: 'Drift',
+                  description: 'Float between worlds in the liminal spaces of existence.',
+                  image: '/images/factions/drift.png',
+                },
+              ].map((faction) => (
+                <div
+                  key={faction.name}
+                  className="flex flex-col items-center text-center"
+                >
+                  <div className="w-28 h-28 md:w-32 md:h-32 mb-4 relative rounded-2xl overflow-hidden border-2 border-dreamstate-purple/30">
+                    <Image
+                      src={faction.image}
+                      alt={faction.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-dreamstate-ice">{faction.name}</h3>
+                  <p className="text-dreamstate-periwinkle leading-relaxed text-sm">
+                    {faction.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="flex items-center justify-center px-4 pb-16">
