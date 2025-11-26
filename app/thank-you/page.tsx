@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/Header';
+import FactionGrid from '@/components/FactionGrid';
 import type { OrderInfoResponse } from '@/lib/types';
 
 function ThankYouContent() {
@@ -148,7 +149,16 @@ function ThankYouContent() {
               </li>
             </ul>
           </div>
+        </div>
+      </div>
 
+      {/* All Factions Section */}
+      <div className="pb-16">
+        <FactionGrid />
+      </div>
+
+      <div className="flex items-center justify-center px-4 pb-16">
+        <div className="max-w-2xl w-full">
           {/* Return Button */}
           <div className="text-center">
             <Link
