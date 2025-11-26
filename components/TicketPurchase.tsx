@@ -188,16 +188,20 @@ export default function TicketPurchase() {
               Ticket Type
             </label>
             <div className="space-y-3">
-              {ticketTypes.map((ticket) => (
-                <div
-                  key={ticket.id}
-                  onClick={() => setSelectedTicketType(ticket.id)}
-                  className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                    selectedTicketType === ticket.id
-                      ? 'border-dreamstate-purple bg-dreamstate-purple/20'
-                      : 'border-dreamstate-slate hover:border-dreamstate-lavender'
-                  }`}
-                >
+              {ticketTypes.map((ticket) => {
+                const isSoldOut = ticket.remaining !== null && ticket.remaining === 0;
+                return (
+                  <div
+                    key={ticket.id}
+                    onClick={() => !isSoldOut && setSelectedTicketType(ticket.id)}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      isSoldOut
+                        ? 'opacity-50 cursor-not-allowed border-gray-600'
+                        : selectedTicketType === ticket.id
+                        ? 'border-dreamstate-purple bg-dreamstate-purple/20 cursor-pointer'
+                        : 'border-dreamstate-slate hover:border-dreamstate-lavender cursor-pointer'
+                    }`}
+                  >
                   <div className="flex gap-4 items-start mb-2">
                     {/* Chess piece image */}
                     <div className="flex-shrink-0 w-16 h-16 relative">
@@ -241,7 +245,8 @@ export default function TicketPurchase() {
                     )}
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
