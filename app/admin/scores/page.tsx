@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/Header';
 
@@ -218,12 +219,12 @@ export default function AdminScoresPage() {
           </div>
 
           <div className="mb-8 text-center">
-            <a
+            <Link
               href="/scoreboard"
               className="text-dreamstate-lavender hover:text-dreamstate-periwinkle underline"
             >
               View Scoreboard
-            </a>
+            </Link>
           </div>
 
           {/* Current Scores Display */}

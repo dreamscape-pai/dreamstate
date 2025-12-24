@@ -149,9 +149,13 @@ export default function ScoreboardPage() {
       <Header />
 
       <div className="container mx-auto px-4 py-8 md:py-16">
-        <h1 className="text-4xl md:text-6xl font-title font-bold text-center mb-8 md:mb-12 text-white">
+        <h1 className="text-4xl md:text-6xl font-title font-bold text-center mb-4 md:mb-6 text-white">
           Faction Scoreboard
         </h1>
+
+        <p className="text-center text-dreamstate-periwinkle text-sm md:text-base mb-8 md:mb-12 max-w-2xl mx-auto">
+          On the 27th of December, all points will be cleared, and the games will begin!
+        </p>
 
         {/* 2x2 Grid - stays 2x2 on mobile, always square, max 300px */}
         <div className="grid grid-cols-2 gap-2.5 max-w-[620px] mx-auto mb-12">
