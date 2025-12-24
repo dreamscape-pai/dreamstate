@@ -255,7 +255,7 @@ export default function ScoreboardPage() {
                       <div className="flex gap-4 items-center">
                         {/* Faction Icon - Mini version of scoreboard card */}
                         <div className="shrink-0">
-                          <div className="relative w-[80px] h-[80px] rounded-lg border-2 overflow-hidden"
+                          <div className="relative w-[100px] h-[100px] rounded-lg border-2 overflow-hidden"
                             style={{
                               borderColor: `var(--${faction.colorToken})`,
                             }}
@@ -278,15 +278,15 @@ export default function ScoreboardPage() {
                             />
 
                             {/* Content */}
-                            <div className="relative z-10 h-full flex flex-col justify-between p-1">
+                            <div className="relative z-10 h-full flex flex-col justify-between p-2">
                               {/* Faction Name - Top Left */}
-                              <h3 className="text-xs font-title font-bold text-dreamstate-ice drop-shadow-lg text-left leading-tight mt-[1px]">
+                              <h3 className="text-sm font-title font-bold text-dreamstate-ice drop-shadow-lg text-left leading-tight">
                                 {faction.displayName}
                               </h3>
 
                               {/* Running Total - Bottom Right */}
                               <div className="text-right">
-                                <div className="text-lg font-title font-bold drop-shadow-lg leading-none"
+                                <div className="text-xl font-title font-bold drop-shadow-lg leading-none"
                                   style={{ color: `var(--${faction.colorToken})` }}
                                 >
                                   {runningTotal < 0 && <span style={{ fontFamily: 'cursive' }}>−</span>}
