@@ -43,6 +43,13 @@
       "when": 1764092303481,
       "tag": "0005_chief_mongoose",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1766549341070,
+      "tag": "0006_mean_pyro",
+      "breakpoints": true
     }
   ]
 }

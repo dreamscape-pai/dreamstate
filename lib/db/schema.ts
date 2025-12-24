@@ -95,6 +95,17 @@ export const physicalTickets = pgTable('physical_tickets', {
   };
 });
 
+// Faction Score Events table (for scoreboard)
+export const factionScoreEvents = pgTable('faction_score_events', {
+  id: serial('id').primaryKey(),
+  factionId: integer('faction_id')
+    .notNull()
+    .references(() => factions.id),
+  points: integer('points').notNull(), // Can be positive or negative
+  description: text('description').notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+});
+
 // Type exports for TypeScript
 export type Faction = typeof factions.$inferSelect;
 export type NewFaction = typeof factions.$inferInsert;
@@ -113,3 +124,6 @@ export type NewTicketCounter = typeof ticketCounter.$inferInsert;
 
 export type PhysicalTicket = typeof physicalTickets.$inferSelect;
 export type NewPhysicalTicket = typeof physicalTickets.$inferInsert;
+
+export type FactionScoreEvent = typeof factionScoreEvents.$inferSelect;
+export type NewFactionScoreEvent = typeof factionScoreEvents.$inferInsert;

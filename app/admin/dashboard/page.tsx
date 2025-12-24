@@ -27,6 +27,7 @@ export default function AdminDashboard() {
   const [tickets, setTickets] = useState<TicketData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<'all' | 'online' | 'in_person'>('all');
 
   useEffect(() => {
     const adminAuth = localStorage.getItem('adminAuth');
@@ -161,7 +162,32 @@ export default function AdminDashboard() {
         {!loading && !error && (
           <>
             <div className="mb-4 text-dreamstate-periwinkle">
-              Total Tickets: <span className="font-bold text-dreamstate-lavender">{tickets.length}</span>
+              Total Tickets: <span className="font-bold text-dreamstate-lavender">
+                <button
+                  onClick={() => setFilter('online')}
+                  className={`hover:text-dreamstate-ice transition-colors ${filter === 'online' ? 'underline' : ''}`}
+                >
+                  {tickets.filter(t => t.purchaseMethod === 'online').length} online
+                </button>
+                {' | '}
+                <button
+                  onClick={() => setFilter('in_person')}
+                  className={`hover:text-dreamstate-ice transition-colors ${filter === 'in_person' ? 'underline' : ''}`}
+                >
+                  {tickets.filter(t => t.purchaseMethod === 'in_person').length} in-person
+                </button>
+                {filter !== 'all' && (
+                  <>
+                    {' '}
+                    <button
+                      onClick={() => setFilter('all')}
+                      className="text-xs text-dreamstate-periwinkle hover:text-dreamstate-ice underline ml-2"
+                    >
+                      (show all)
+                    </button>
+                  </>
+                )}
+              </span>
             </div>
 
             <div className="bg-dreamstate-slate/30 rounded-lg border border-dreamstate-purple/30 backdrop-blur-sm overflow-hidden">
@@ -177,22 +203,19 @@ export default function AdminDashboard() {
                       <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Faction</th>
                       <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Created</th>
                       <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Status</th>
-                      <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">Stripe</th>
+                      <th className="px-4 py-3 text-left text-dreamstate-lavender font-semibold">View</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-dreamstate-slate/30">
-                    {tickets.map((ticket) => (
+                    {tickets
+                      .filter(ticket => filter === 'all' || ticket.purchaseMethod === filter)
+                      .map((ticket) => (
                       <tr
                         key={ticket.ticketNumber}
                         className="hover:bg-dreamstate-slate/20 transition-colors"
                       >
                         <td className="px-4 py-3 text-dreamstate-ice font-mono">
-                          <Link
-                            href={`/verify/${ticket.verificationToken}`}
-                            className="hover:text-dreamstate-lavender cursor-pointer"
-                          >
-                            #{ticket.ticketNumber}
-                          </Link>
+                          #{ticket.ticketNumber}
                         </td>
                         <td className="px-4 py-3 text-dreamstate-ice">
                           {ticket.customerName || '-'}
@@ -235,19 +258,24 @@ export default function AdminDashboard() {
                           )}
                         </td>
                         <td className="px-4 py-3">
-                          {ticket.stripePaymentIntentId ? (
-                            <a
-                              href={`https://dashboard.stripe.com/payments/${ticket.stripePaymentIntentId}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-400 hover:text-blue-300 text-xs underline"
-                              onClick={(e) => e.stopPropagation()}
+                          <div className="flex flex-col gap-1">
+                            <Link
+                              href={`/verify/${ticket.verificationToken}`}
+                              className="text-dreamstate-lavender hover:text-dreamstate-periwinkle text-xs underline"
                             >
-                              View
-                            </a>
-                          ) : (
-                            <span className="text-dreamstate-slate text-xs">-</span>
-                          )}
+                              view
+                            </Link>
+                            {ticket.purchaseMethod === 'online' && ticket.stripePaymentIntentId && (
+                              <a
+                                href={`https://dashboard.stripe.com/payments/${ticket.stripePaymentIntentId}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-400 hover:text-blue-300 text-xs underline"
+                              >
+                                stripe
+                              </a>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}

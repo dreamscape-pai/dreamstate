@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { tickets, ticketOrders, ticketTypes, factions } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 
 export async function GET(request: NextRequest) {
   // Verify admin password
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       })
       .from(tickets)
       .innerJoin(factions, eq(tickets.assignedFactionId, factions.id))
-      .orderBy(tickets.createdAt);
+      .orderBy(desc(tickets.createdAt));
 
     // Get order info for each ticket
     const ticketsWithOrderInfo = await Promise.all(

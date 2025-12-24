@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Hero() {
   const scrollToTickets = () => {
@@ -8,10 +9,31 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-[60vh] md:min-h-[70vh] flex items-center justify-center px-4 py-16">
+    <section className="relative min-h-[60vh] md:min-h-[70vh] flex items-center justify-center px-4 py-8">
       <div className="absolute inset-0 bg-gradient-to-b from-dreamstate-purple/20 to-transparent pointer-events-none" />
 
       <div className="relative max-w-4xl mx-auto text-center">
+        {/* Scoreboard Button */}
+        <div className="mb-10">
+          <div className="inline-flex items-center gap-4">
+            <span className="text-dreamstate-lavender" style={{ fontFamily: 'cursive', fontSize: '3rem' }}>→</span>
+            <Link
+              href="/scoreboard"
+              className="inline-block px-8 py-4 bg-dreamstate-purple hover:bg-dreamstate-slate text-dreamstate-ice font-semibold rounded-lg shadow-lg transition-all hover:scale-105"
+            >
+              View the Scoreboard
+            </Link>
+            <span className="text-dreamstate-lavender" style={{ fontFamily: 'cursive', fontSize: '3rem' }}>←</span>
+          </div>
+
+          {/* Decorative divider */}
+          <div className="mt-6 flex items-center justify-center gap-4">
+            <div className="h-px bg-gradient-to-r from-transparent via-dreamstate-purple/50 to-transparent w-32"></div>
+            <div className="w-2 h-2 rounded-full bg-dreamstate-purple/50"></div>
+            <div className="h-px bg-gradient-to-r from-transparent via-dreamstate-purple/50 to-transparent w-32"></div>
+          </div>
+        </div>
+
         {/* Hero image */}
         <div className="mb-8 relative rounded-lg overflow-hidden border border-dreamstate-purple/30 shadow-2xl mx-auto w-full max-w-[660px]" style={{ height: '465px' }}>
           <Image
