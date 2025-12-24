@@ -280,7 +280,7 @@ export default function ScoreboardPage() {
                             {/* Content */}
                             <div className="relative z-10 h-full flex flex-col justify-between p-2">
                               {/* Faction Name - Top Left */}
-                              <h3 className="text-sm font-title font-bold text-dreamstate-ice drop-shadow-lg text-left leading-tight">
+                              <h3 className="font-title font-bold text-dreamstate-ice drop-shadow-lg text-left leading-tight" style={{ fontSize: '16px' }}>
                                 {faction.displayName}
                               </h3>
 
@@ -300,9 +300,10 @@ export default function ScoreboardPage() {
                         {/* Points Display */}
                         <div className="text-right shrink-0 leading-none ml-auto sm:hidden">
                           <div
-                            className={`text-4xl md:text-5xl font-title font-bold ${
+                            className={`font-title font-bold ${
                               event.points >= 0 ? 'text-green-400' : 'text-red-400'
                             }`}
+                            style={{ fontSize: '2.5rem' }}
                           >
                             {event.points > 0 && <span style={{ fontFamily: 'cursive' }}>+</span>}
                             {event.points < 0 && <span style={{ fontFamily: 'cursive' }}>−</span>}
@@ -325,9 +326,10 @@ export default function ScoreboardPage() {
                           </div>
                           <div className="text-right shrink-0 leading-none">
                             <div
-                              className={`text-4xl md:text-5xl font-title font-bold ${
+                              className={`font-title font-bold ${
                                 event.points >= 0 ? 'text-green-400' : 'text-red-400'
                               }`}
+                              style={{ fontSize: '2.5rem' }}
                             >
                               {event.points > 0 && <span style={{ fontFamily: 'cursive' }}>+</span>}
                               {event.points < 0 && <span style={{ fontFamily: 'cursive' }}>−</span>}
